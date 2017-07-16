@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by rikim on 2017. 7. 16..
  */
-public interface FetchedResultStorage {
+public interface FetchedResultRepository {
     void save();
+    List<FetchedResult> findAll();
 }

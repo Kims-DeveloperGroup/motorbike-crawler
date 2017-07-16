@@ -1,5 +1,6 @@
 package com.devoo.kim.crawl;
 
+import com.devoo.kim.storage.FetchedResultRepository;
 import com.devoo.kim.util.FetcherUrls;
 import crawlercommons.fetcher.BaseFetchException;
 import crawlercommons.fetcher.FetchedResult;
@@ -14,13 +15,16 @@ import java.util.List;
 /**
  * Created by rikim on 2017. 7. 15..
  */
-@Services
+@Service
 public class FetcherRunner {
     @Autowired
-    BaseHttpFetcher httpFetcher;
+    private BaseHttpFetcher httpFetcher;
 
     @Autowired
-    FetcherUrls fetcherUrls;
+    private FetcherUrls fetcherUrls;
+
+    @Autowired
+    private FetchedResultRepository fetchedResultRepository;
 
     public void run() throws IOException, BaseFetchException {
         List<String> targetUrls = fetcherUrls.getAll();
@@ -29,5 +33,6 @@ public class FetcherRunner {
         for (String url : targetUrls) {
             results.add(httpFetcher.get(url));
         }
+        fetchedResultRepository.save();
     }
 }

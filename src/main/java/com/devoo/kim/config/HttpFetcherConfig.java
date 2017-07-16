@@ -14,7 +14,7 @@ public class HttpFetcherConfig {
     @Bean
     public BaseHttpFetcher httpFetcher() {
         UserAgent userAgent = new UserAgent("httpFetcher", null, null);
-        maxThreads = 1;
+        maxThreads = 4;
         SimpleHttpFetcher httpFetcher = new SimpleHttpFetcher(maxThreads,userAgent);
         return httpFetcher;
     }
