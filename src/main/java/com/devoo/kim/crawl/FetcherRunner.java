@@ -1,6 +1,7 @@
 package com.devoo.kim.crawl;
 
 import com.devoo.kim.storage.FetchedResultRepository;
+import com.devoo.kim.storage.exception.FailToSaveFetchedResultException;
 import com.devoo.kim.util.FetcherUrls;
 import crawlercommons.fetcher.BaseFetchException;
 import crawlercommons.fetcher.FetchedResult;
@@ -26,13 +27,13 @@ public class FetcherRunner {
     @Autowired
     private FetchedResultRepository fetchedResultRepository;
 
-    public void run() throws IOException, BaseFetchException {
+    public void run() throws IOException, BaseFetchException, FailToSaveFetchedResultException {
         List<String> targetUrls = fetcherUrls.getAll();
 
         List<FetchedResult> results = new ArrayList<>();
         for (String url : targetUrls) {
             results.add(httpFetcher.get(url));
         }
-        fetchedResultRepository.save();
+        fetchedResultRepository.save(results);
     }
 }
