@@ -1,11 +1,9 @@
 package com.devoo.kim.external.api.naver;
 
-import com.devoo.kim.data.FetchedResultWrapper;
-import crawlercommons.fetcher.FetchedResult;
+import com.google.gson.Gson;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -13,9 +11,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -30,25 +25,24 @@ public class NaverCafeAPI {
     private String clientId;
     private String clientSeceret;
 
-    private void doRequest(String query, String sort, int countfResult, int start) {
+    private Gson gson = new Gson();
+    private RestTemplate restTemplate = new RestTemplate();
+
+    private ResponseEntity<String> doRequest(String query, String sort, int countfResult, int start) {
         URI url = UriComponentsBuilder.fromHttpUrl(API_URL)
                 .queryParam("query", query)
                 .queryParam("sort", sort)
                 .queryParam("display", countfResult)
                 .queryParam("start", start).build().toUri();
-
-        HttpEntity<String> requestEntity = new HttpEntity(headers());
-
-
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.exchange(url, HttpMethod.GET, (HttpEntity<?>) requestEntity, String.class);
-
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, header(), String.class);
+        return response;
     }
 
-    private MultiValueMap<String, Object> headers() {
-        MultiValueMap<String, Object> headers = new LinkedMultiValueMap<>();
-        headers.add(CLIENT_ID_HEADER, clientId);
-        headers.add(CLIENT_SECRET_HEADER, clientSeceret);
-        return headers;
+    private HttpEntity<Void> header() {
+        MultiValueMap<String, String> auth = new LinkedMultiValueMap<>();
+        auth.add(CLIENT_ID_HEADER, clientId);
+        auth.add(CLIENT_SECRET_HEADER, clientSeceret);
+        HttpEntity<Void> httpHeader = new HttpEntity<>(auth);
+        return httpHeader;
     }
 }
