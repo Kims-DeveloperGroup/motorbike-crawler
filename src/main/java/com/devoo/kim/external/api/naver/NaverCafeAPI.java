@@ -1,6 +1,7 @@
 package com.devoo.kim.external.api.naver;
 
-import com.google.gson.Gson;
+import com.sun.org.apache.regexp.internal.RE;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +23,22 @@ public class NaverCafeAPI {
     private final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
     private final String API_URL = "https://openapi.naver.com/v1/search/cafearticle.json";
 
+    @Value("${external.naver.cafe.clientId}")
     private String clientId;
+    @Value("${external.naver.cafe.clientSecret}")
     private String clientSeceret;
-
-    private Gson gson = new Gson();
     private RestTemplate restTemplate = new RestTemplate();
+    private String SIMILARITY_ORDER = "sim";
 
-    private ResponseEntity<String> doRequest(String query, String sort, int countfResult, int start) {
+    public ResponseEntity<String> search(String query, int countOfResult) {
+        return doRequest(query, SIMILARITY_ORDER, countOfResult, 1);
+    }
+
+    private ResponseEntity<String> doRequest(String query, String sort, int countOfResult, int start) {
         URI url = UriComponentsBuilder.fromHttpUrl(API_URL)
                 .queryParam("query", query)
                 .queryParam("sort", sort)
-                .queryParam("display", countfResult)
+                .queryParam("display", countOfResult)
                 .queryParam("start", start).build().toUri();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, header(), String.class);
         return response;
