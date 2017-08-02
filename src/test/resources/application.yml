@@ -1,0 +1,10 @@
+spring:
+  profiles: test
+
+external:
+  naver:
+    cafe:
+      clientId: WubhieoC0PbQRncZgofe
+      clientSecret: tYAhfACYdU
+  paxxo:
+    url: http://bike.passo.co.kr/bike/index.php

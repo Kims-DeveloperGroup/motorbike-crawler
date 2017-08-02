@@ -6,10 +6,21 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.hadoop.yarn.webapp.hamlet.HamletSpec.InputType.file;
 
 /**
  * Created by rikim on 2017. 7. 30..
@@ -22,11 +33,11 @@ public class PaxxoApiClient {
 
     RestTemplate restTemplate = new RestTemplate();
 
-    public PaxxoDataSet search(String maker, String model) {
+    public PaxxoDataSet search(String maker, String model) throws JAXBException {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(form(), headers());
-        String result = restTemplate.postForObject(requestUrl, requestEntity, String.class);
-        System.out.println(result);
-        return null;
+        Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
+        List<MediaType> mediaTypeList = new ArrayList<>();
+        return restTemplate.postForObject(requestUrl, requestEntity, PaxxoDataSet.class);
     }
 
     private MultiValueMap<String, Object> headers() {

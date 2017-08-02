@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.xml.bind.JAXBException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -18,10 +20,10 @@ import static org.junit.Assert.*;
 @ActiveProfiles("test")
 public class PaxxoApiClientTest {
     @Autowired
-    PaxxoApiClient requestClient;
+    private PaxxoApiClient requestClient;
 
     @Test
-    public void shouldRetrieveSearchResultData() {
+    public void shouldRetrieveSearchResultData() throws JAXBException {
         String maker;
         String model;
         GIVE: {
