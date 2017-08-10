@@ -1,6 +1,4 @@
-package com.devoo.kim.data.paxxo;
-
-import lombok.Data;
+package com.devoo.kim.domain.paxxo;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

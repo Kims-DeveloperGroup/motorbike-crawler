@@ -7,4 +7,5 @@ external:
       clientId: WubhieoC0PbQRncZgofe
       clientSecret: tYAhfACYdU
   paxxo:
-    url: http://bike.passo.co.kr/bike/index.php
+    country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=
+    item-search-api: http://bike.passo.co.kr/bike/index.php

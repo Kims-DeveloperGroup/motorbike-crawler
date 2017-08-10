@@ -1,26 +1,20 @@
 package com.devoo.kim.external.api.passo;
 
-import com.devoo.kim.data.paxxo.PaxxoDataSet;
+import com.devoo.kim.domain.paxxo.PaxxoDataIndex;
+import com.devoo.kim.domain.paxxo.PaxxoDataSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.hadoop.yarn.webapp.hamlet.HamletSpec.InputType.file;
 
 /**
  * Created by rikim on 2017. 7. 30..
@@ -28,10 +22,13 @@ import static org.apache.hadoop.yarn.webapp.hamlet.HamletSpec.InputType.file;
 @Service
 public class PaxxoApiClient {
 
-    @Value("${external.paxxo.url}")
+    @Value("${external.paxxo.item-search-api}")
     private String requestUrl;
 
-    RestTemplate restTemplate = new RestTemplate();
+    @Value("${external.paxxo.country-maker-index-api}")
+    private String makerCountryIndexApi;
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     public PaxxoDataSet search(String maker, String model) throws JAXBException {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(form(), headers());
@@ -57,4 +54,7 @@ public class PaxxoApiClient {
     }
 
 
+    public PaxxoDataIndex getCountryAndMakerIndex() {
+        return null;
+    }
 }

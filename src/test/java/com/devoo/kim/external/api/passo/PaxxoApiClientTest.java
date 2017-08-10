@@ -1,6 +1,7 @@
 package com.devoo.kim.external.api.passo;
 
-import com.devoo.kim.data.paxxo.PaxxoDataSet;
+import com.devoo.kim.domain.paxxo.PaxxoDataIndex;
+import com.devoo.kim.domain.paxxo.PaxxoDataSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
 @ActiveProfiles("test")
 public class PaxxoApiClientTest {
     @Autowired
-    private PaxxoApiClient requestClient;
+    private PaxxoApiClient paxxoApiClient;
 
     @Test
     public void shouldRetrieveSearchResultData() throws JAXBException {
@@ -33,12 +34,27 @@ public class PaxxoApiClientTest {
 
         PaxxoDataSet result;
         WHEN: {
-            result = requestClient.search(maker, model);
+            result = paxxoApiClient.search(maker, model);
         }
 
         THEN: {
             assertNotNull(result);
         }
+    }
+
+    @Test
+    public void shouldRetrieveCountryAndMakerIndex() {
+
+        PaxxoDataIndex index;
+        WHEN: {
+           index = paxxoApiClient.getCountryAndMakerIndex();
+        }
+
+        THEN: {
+            assertNotNull(index);
+        }
+
+
     }
 
 }
