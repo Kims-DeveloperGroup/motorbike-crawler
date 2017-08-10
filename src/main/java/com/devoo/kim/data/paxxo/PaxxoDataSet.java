@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by rikim on 2017. 7. 30..
  */
 @XmlRootElement(name = "passo", namespace = "")
-@Data
 public class PaxxoDataSet {
 
     @XmlElement
