@@ -53,8 +53,7 @@ public class PaxxoApiClient {
         return form;
     }
 
-
     public PaxxoDataIndex getCountryAndMakerIndex() {
-        return null;
+        return restTemplate.getForObject(makerCountryIndexApi, PaxxoDataIndex.class);
     }
 }

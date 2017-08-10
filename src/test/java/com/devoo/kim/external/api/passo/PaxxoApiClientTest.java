@@ -44,6 +44,7 @@ public class PaxxoApiClientTest {
 
     @Test
     public void shouldRetrieveCountryAndMakerIndex() {
+        GIVEN: {}
 
         PaxxoDataIndex index;
         WHEN: {
@@ -53,8 +54,5 @@ public class PaxxoApiClientTest {
         THEN: {
             assertNotNull(index);
         }
-
-
     }
-
 }
