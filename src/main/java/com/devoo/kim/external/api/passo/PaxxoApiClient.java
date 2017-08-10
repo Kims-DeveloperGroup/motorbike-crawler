@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rikim on 2017. 7. 30..
@@ -31,10 +32,16 @@ public class PaxxoApiClient {
     private RestTemplate restTemplate = new RestTemplate();
 
     public PaxxoDataSet search(String maker, String model) throws JAXBException {
+        addQuery(maker, model, form());
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(form(), headers());
         Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
         List<MediaType> mediaTypeList = new ArrayList<>();
         return restTemplate.postForObject(requestUrl, requestEntity, PaxxoDataSet.class);
+    }
+
+    private MultiValueMap<String, String> addQuery(String maker, String model, MultiValueMap<String, String> form) {
+        form.add("search", "@(maker_idx:@(model_idx:^maker_idx={maker}#{model1}#{model2}#");
+        return null;
     }
 
     private MultiValueMap<String, Object> headers() {
