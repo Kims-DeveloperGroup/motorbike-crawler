@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.JAXBException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,11 @@ public class PaxxoApiClient {
         return restTemplate.postForObject(requestUrl, requestEntity, PaxxoDataSet.class);
     }
 
-    private MultiValueMap<String, String> addQuery(String maker, String model, MultiValueMap<String, String> form) {
-        form.add("search", "@(maker_idx:@(model_idx:^maker_idx={maker}#{model1}#{model2}#");
+    private MultiValueMap<String, String> addQuery(String maker, String model) {
+        MultiValueMap<String, String> form = form();
+        MessageFormat messageFormat = new MessageFormat("@(maker_idx:@(model_idx:^maker_idx={0}#{1}#");
+        String searchValue = messageFormat.format(new String[]{maker, model});
+        form.add("search", searchValue);
         return null;
     }
 
