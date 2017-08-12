@@ -12,6 +12,9 @@ public class PaxxoDataSet {
     @XmlElement
     private String count;
 
-    @XmlElement
-    private Item
+    @XmlElement(name = "goods")
+    private PaxxoItem[] items;
+
+    @XmlElement(name = "page")
+    private PaxxoPage page;
 }
