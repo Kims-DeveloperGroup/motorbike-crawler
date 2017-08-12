@@ -1,6 +1,7 @@
 package com.devoo.kim.domain.paxxo;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -12,7 +13,8 @@ public class PaxxoSearchData {
     @XmlElement
     private String count;
 
-    @XmlElement(name = "goods")
+    @XmlElementWrapper(name = "goods")
+    @XmlElement(name = "item")
     private PaxxoItem[] items;
 
     @XmlElement(name = "page")

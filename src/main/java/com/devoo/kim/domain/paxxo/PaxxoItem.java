@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by rikim on 2017. 8. 12..
  */
-@XmlRootElement(name = "item", namespace = "goods")
+@XmlRootElement(name = "item")
 public class PaxxoItem {
     @XmlElement(name = "idx")
     long id;
