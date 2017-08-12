@@ -28,8 +28,8 @@ public class PaxxoApiClientTest {
         String maker;
         String model;
         GIVE: {
-            maker = "honda";
-            model = "cbr125r";
+            maker = "34";
+            model = "366";
         }
 
         PaxxoDataSet result;
