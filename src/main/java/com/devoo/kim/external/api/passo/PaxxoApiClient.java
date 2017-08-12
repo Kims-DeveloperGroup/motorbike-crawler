@@ -16,7 +16,6 @@ import javax.xml.bind.JAXBException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rikim on 2017. 7. 30..
@@ -33,19 +32,19 @@ public class PaxxoApiClient {
     private RestTemplate restTemplate = new RestTemplate();
 
     public PaxxoDataSet search(String maker, String model) throws JAXBException {
-        addQuery(maker, model, form());
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(form(), headers());
+        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model);
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
         Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
         List<MediaType> mediaTypeList = new ArrayList<>();
         return restTemplate.postForObject(requestUrl, requestEntity, PaxxoDataSet.class);
     }
 
-    private MultiValueMap<String, String> addQuery(String maker, String model) {
-        MultiValueMap<String, String> form = form();
+    private MultiValueMap<String, String> makeSearchForm(String maker, String model) {
+        MultiValueMap<String, String> searchForm = form();
         MessageFormat messageFormat = new MessageFormat("@(maker_idx:@(model_idx:^maker_idx={0}#{1}#");
         String searchValue = messageFormat.format(new String[]{maker, model});
-        form.add("search", searchValue);
-        return null;
+        searchForm.add("search", searchValue);
+        return searchForm;
     }
 
     private MultiValueMap<String, Object> headers() {
