@@ -11,4 +11,7 @@ public class PaxxoDataSet {
 
     @XmlElement
     private String count;
+
+    @XmlElement
+    private Item
 }

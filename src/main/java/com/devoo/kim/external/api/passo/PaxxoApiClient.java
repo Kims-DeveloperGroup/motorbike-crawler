@@ -39,6 +39,10 @@ public class PaxxoApiClient {
         return restTemplate.postForObject(requestUrl, requestEntity, PaxxoDataSet.class);
     }
 
+    public PaxxoDataIndex getCountryAndMakerIndex() {
+        return restTemplate.getForObject(makerCountryIndexApi, PaxxoDataIndex.class);
+    }
+
     private MultiValueMap<String, String> makeSearchForm(String maker, String model) {
         MultiValueMap<String, String> searchForm = form();
         MessageFormat messageFormat = new MessageFormat("@(maker_idx:@(model_idx:^maker_idx={0}#{1}#");
@@ -61,9 +65,5 @@ public class PaxxoApiClient {
         form.add("mode", "process");
         form.add("process", "list");
         return form;
-    }
-
-    public PaxxoDataIndex getCountryAndMakerIndex() {
-        return restTemplate.getForObject(makerCountryIndexApi, PaxxoDataIndex.class);
     }
 }
