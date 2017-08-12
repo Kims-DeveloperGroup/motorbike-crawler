@@ -11,6 +11,6 @@ public class PaxxoPage {
     @XmlElement(name = "next")
     private int currentPage;
 
-    @XmlElement(name = "next")
+    @XmlElement(name = "last")
     private int lastPage;
 }
