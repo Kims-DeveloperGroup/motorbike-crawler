@@ -1,7 +1,7 @@
 package com.devoo.kim.external.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoDataIndex;
-import com.devoo.kim.domain.paxxo.PaxxoDataSet;
+import com.devoo.kim.domain.paxxo.PaxxoSearchData;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,12 +31,12 @@ public class PaxxoApiClient {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public PaxxoDataSet search(String maker, String model) throws JAXBException {
+    public PaxxoSearchData search(String maker, String model) throws JAXBException {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
         Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
         List<MediaType> mediaTypeList = new ArrayList<>();
-        return restTemplate.postForObject(requestUrl, requestEntity, PaxxoDataSet.class);
+        return restTemplate.postForObject(requestUrl, requestEntity, PaxxoSearchData.class);
     }
 
     public PaxxoDataIndex getCountryAndMakerIndex() {

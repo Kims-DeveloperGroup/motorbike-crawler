@@ -1,7 +1,7 @@
 package com.devoo.kim.external.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoDataIndex;
-import com.devoo.kim.domain.paxxo.PaxxoDataSet;
+import com.devoo.kim.domain.paxxo.PaxxoSearchData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class PaxxoApiClientTest {
             model = "366";
         }
 
-        PaxxoDataSet result;
+        PaxxoSearchData result;
         WHEN: {
             result = paxxoApiClient.search(maker, model);
         }
