@@ -15,6 +15,9 @@ public class PaxxoItem {
     String title;
 
     @XmlElement
+    String maker;
+
+    @XmlElement
     String model;
 
     @XmlElement(name = "out_year")
