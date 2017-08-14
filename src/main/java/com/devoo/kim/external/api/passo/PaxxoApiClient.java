@@ -44,7 +44,12 @@ public class PaxxoApiClient {
 
     private MultiValueMap<String, String> makeSearchForm(String maker, String model) {
         MultiValueMap<String, String> searchForm = form();
-        MessageFormat messageFormat = new MessageFormat("@(maker_idx:@(model_idx:^maker_idx={0}#{1}#");
+        MessageFormat messageFormat;
+        if (maker.equals("") && model.equals("")){
+            messageFormat = new MessageFormat("@(maker_idx:");
+        }else {
+            messageFormat = new MessageFormat("@(maker_idx:@(model_idx:^maker_idx={0}#{1}#");
+        }
         String searchValue = messageFormat.format(new String[]{maker, model});
         searchForm.add("search", searchValue);
         return searchForm;
@@ -64,5 +69,10 @@ public class PaxxoApiClient {
         form.add("mode", "process");
         form.add("process", "list");
         return form;
+    }
+
+
+    public PaxxoSearchResult searchAll() throws JAXBException {
+        return search("","");
     }
 }

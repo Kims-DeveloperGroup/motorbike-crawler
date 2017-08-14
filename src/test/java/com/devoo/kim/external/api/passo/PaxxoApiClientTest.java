@@ -43,6 +43,19 @@ public class PaxxoApiClientTest {
     }
 
     @Test
+    public void shouldRetrieveAllItemsByNoSearchInput() throws JAXBException {
+
+        PaxxoSearchResult result;
+        WHEN: {
+            result = paxxoApiClient.searchAll();
+        }
+
+        THEN: {
+            assertNotNull(result);
+        }
+    }
+
+    @Test
     public void shouldRetrieveCountryAndMakerIndex() {
         GIVEN: {}
 
