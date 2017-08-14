@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Maker {
-    @XmlElement(name = "maker_id")
+    @XmlElement(name = "maker_idx")
     private long id;
 
     @XmlElement(name = "maker_name")
