@@ -1,5 +1,6 @@
 package com.devoo.kim.domain.paxxo;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -7,5 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "data")
 public class PaxxoMakerIndices {
-
+    @XmlElement(name = "country")
+    private PaxxoMakerIndexByCountry[] makerIndexByCountries;
 }
