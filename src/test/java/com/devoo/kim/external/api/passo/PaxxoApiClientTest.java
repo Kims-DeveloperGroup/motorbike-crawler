@@ -24,7 +24,7 @@ public class PaxxoApiClientTest {
     private PaxxoApiClient paxxoApiClient;
 
     @Test
-    public void shouldRetrieveSearchResultData() throws JAXBException {
+    public void shouldRetrieveSearchResultDataByMakerAndModel() throws JAXBException {
         String maker;
         String model;
         GIVE: {
