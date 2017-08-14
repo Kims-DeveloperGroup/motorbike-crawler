@@ -1,7 +1,7 @@
 package com.devoo.kim.external.api.passo;
 
-import com.devoo.kim.domain.paxxo.PaxxoDataIndex;
-import com.devoo.kim.domain.paxxo.PaxxoSearchData;
+import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
+import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class PaxxoApiClientTest {
             model = "366";
         }
 
-        PaxxoSearchData result;
+        PaxxoSearchResult result;
         WHEN: {
             result = paxxoApiClient.search(maker, model);
         }
@@ -46,7 +46,7 @@ public class PaxxoApiClientTest {
     public void shouldRetrieveCountryAndMakerIndex() {
         GIVEN: {}
 
-        PaxxoDataIndex index;
+        PaxxoMakerIndices index;
         WHEN: {
            index = paxxoApiClient.getCountryAndMakerIndex();
         }

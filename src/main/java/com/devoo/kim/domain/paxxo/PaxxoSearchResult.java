@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by rikim on 2017. 7. 30..
  */
 @XmlRootElement(name = "passo", namespace = "")
-public class PaxxoSearchData {
+public class PaxxoSearchResult {
 
     @XmlElement
     private String count;
