@@ -24,7 +24,7 @@ import java.util.List;
 public class PaxxoApiClient {
 
     @Value("${external.paxxo.item-search-api}")
-    private String requestUrl;
+    private String itemSearchApi;
 
     @Value("${external.paxxo.country-maker-index-api}")
     private String makerCountryIndexApi;
@@ -35,8 +35,7 @@ public class PaxxoApiClient {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
         Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
-        List<MediaType> mediaTypeList = new ArrayList<>();
-        return restTemplate.postForObject(requestUrl, requestEntity, PaxxoSearchResult.class);
+        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
     }
 
     public PaxxoMakerIndices getCountryAndMakerIndex() {
