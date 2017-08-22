@@ -61,7 +61,7 @@ public class PaxxoApiClientTest {
 
         PaxxoMakerIndices index;
         WHEN: {
-           index = paxxoApiClient.getCountryAndMakerIndex();
+           index = paxxoApiClient.getMakerIndices();
         }
 
         THEN: {

@@ -38,7 +38,7 @@ public class PaxxoApiClient {
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
     }
 
-    public PaxxoMakerIndices getCountryAndMakerIndex() {
+    public PaxxoMakerIndices getMakerIndices() {
         return restTemplate.getForObject(makerCountryIndexApi, PaxxoMakerIndices.class);
     }
 
