@@ -8,12 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "country")
 public class PaxxoMakerIndexByCountry {
-    @XmlElement(name = "idx")
-    private long countryId;
-
-    @XmlElement(name = "name_k")
-    private String countryName;
-
     @XmlElement(name = "maker")
     private Maker[] makers;
 }
