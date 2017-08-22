@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -53,7 +54,7 @@ public class PaxxoCrawlingServiceTest {
 
         THEN:
         {
-
+            //Maker Indices Repository should be updated.
         }
     }
 }
