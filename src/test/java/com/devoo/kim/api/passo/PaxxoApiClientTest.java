@@ -1,4 +1,4 @@
-package com.devoo.kim.external.api.passo;
+package com.devoo.kim.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
 import com.devoo.kim.domain.paxxo.PaxxoSearchResult;

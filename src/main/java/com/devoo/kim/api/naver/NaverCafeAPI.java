@@ -1,4 +1,4 @@
-package com.devoo.kim.external.api.naver;
+package com.devoo.kim.api.naver;
 
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Value;

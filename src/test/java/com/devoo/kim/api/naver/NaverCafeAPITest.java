@@ -1,6 +1,5 @@
-package com.devoo.kim.external.api.naver;
+package com.devoo.kim.api.naver;
 
-import javafx.beans.binding.When;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
