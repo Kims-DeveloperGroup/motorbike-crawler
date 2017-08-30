@@ -1,6 +1,6 @@
 package com.devoo.kim.storage;
 
-import com.devoo.kim.domain.FetchedResultWrapper;
+import com.devoo.kim.data.FetchedResultWrapper;
 import com.devoo.kim.storage.exception.FailToSaveFetchedResultException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import crawlercommons.fetcher.FetchedResult;
