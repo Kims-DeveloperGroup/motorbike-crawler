@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,8 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.JAXBException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rikim on 2017. 7. 30..
@@ -30,6 +27,9 @@ public class PaxxoApiClient {
     private String makerCountryIndexApi;
 
     private RestTemplate restTemplate = new RestTemplate();
+
+    private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
+    private static final String ALL_ITEM_QUERY = "@(maker_idx:";
 
     public PaxxoSearchResult searchAll() throws JAXBException {
         return search("","");
@@ -49,9 +49,9 @@ public class PaxxoApiClient {
         MultiValueMap<String, String> searchForm = form();
         MessageFormat messageFormat;
         if (maker.equals("") && model.equals("")){
-            messageFormat = new MessageFormat("@(maker_idx:");
+            messageFormat = new MessageFormat(ALL_ITEM_QUERY);
         }else {
-            messageFormat = new MessageFormat("@(maker_idx:@(model_idx:^maker_idx={0}#{1}#");
+            messageFormat = new MessageFormat(SPECIFIC_MAKER_AND_MODEL_QUERY);
         }
         String searchValue = messageFormat.format(new String[]{maker, model});
         searchForm.add("search", searchValue);
