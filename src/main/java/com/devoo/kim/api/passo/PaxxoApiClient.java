@@ -31,6 +31,10 @@ public class PaxxoApiClient {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    public PaxxoSearchResult searchAll() throws JAXBException {
+        return search("","");
+    }
+
     public PaxxoSearchResult search(String maker, String model) throws JAXBException {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
@@ -62,6 +66,7 @@ public class PaxxoApiClient {
         return headers;
     }
 
+
     private MultiValueMap<String, String> form() {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("part", "cybershop");
@@ -69,10 +74,5 @@ public class PaxxoApiClient {
         form.add("mode", "process");
         form.add("process", "list");
         return form;
-    }
-
-
-    public PaxxoSearchResult searchAll() throws JAXBException {
-        return search("","");
     }
 }
