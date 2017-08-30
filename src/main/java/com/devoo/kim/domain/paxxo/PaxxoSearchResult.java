@@ -1,5 +1,7 @@
 package com.devoo.kim.domain.paxxo;
 
+import lombok.Getter;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,4 +21,8 @@ public class PaxxoSearchResult {
 
     @XmlElement(name = "page")
     private PaxxoPage page;
+
+    public int getLastPage() {
+        return page.getLastPage();
+    }
 }
