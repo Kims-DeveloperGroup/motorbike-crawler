@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class PaxxoApiClient {
 
-    @Value("${external.paxxo.item-query-api}")
+    @Value("${external.paxxo.item-search-api}")
     private String itemSearchApi;
 
     @Value("${external.paxxo.country-maker-index-api}")
