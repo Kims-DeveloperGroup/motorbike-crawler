@@ -2,9 +2,12 @@ package com.devoo.kim.service;
 
 import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
+import com.devoo.kim.domain.paxxo.PaxxoItem;
+import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import com.devoo.kim.repository.PaxxoIndicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.xml.bind.JAXBException;
 import java.util.List;
 
 /**
@@ -23,4 +26,9 @@ public class PaxxoCrawlingService {
         List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
         paxxoIndicesRepository.save(makerIndices);
     }
+
+    public int updateItems() {
+        return 0;
+    }
+
 }

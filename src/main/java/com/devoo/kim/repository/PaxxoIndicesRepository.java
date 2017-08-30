@@ -1,6 +1,7 @@
 package com.devoo.kim.repository;
 
 import com.devoo.kim.domain.paxxo.Maker;
+import com.devoo.kim.domain.paxxo.PaxxoItem;
 
 import java.util.Collection;
 
@@ -9,5 +10,7 @@ import java.util.Collection;
  */
 public class PaxxoIndicesRepository {
 
-    public void save(Collection<Maker> makers){}
+    public void save(Collection<Maker> makers) {}
+
+    public void saveItems(Collection<PaxxoItem> items) {}
 }

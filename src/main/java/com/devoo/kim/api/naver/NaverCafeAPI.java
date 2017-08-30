@@ -21,7 +21,7 @@ import java.net.URI;
 public class NaverCafeAPI {
     private final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
     private final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
-    private final String API_URL = "https://openapi.naver.com/v1/search/cafearticle.json";
+    private final String API_URL = "https://openapi.naver.com/v1/query/cafearticle.json";
 
     @Value("${external.naver.cafe.clientId}")
     private String clientId;

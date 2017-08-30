@@ -1,5 +1,6 @@
 package com.devoo.kim.api.passo;
 
+import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
 import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.JAXBException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by rikim on 2017. 7. 30..
@@ -20,7 +23,7 @@ import java.text.MessageFormat;
 @Service
 public class PaxxoApiClient {
 
-    @Value("${external.paxxo.item-search-api}")
+    @Value("${external.paxxo.item-query-api}")
     private String itemSearchApi;
 
     @Value("${external.paxxo.country-maker-index-api}")
@@ -31,12 +34,21 @@ public class PaxxoApiClient {
     private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
     private static final String ALL_ITEM_QUERY = "@(maker_idx:";
 
-    public PaxxoSearchResult searchAll() throws JAXBException {
-        return search("","");
+    public List<PaxxoItem> searchAll(int limit) throws JAXBException {
+        PaxxoSearchResult result = query("","", 0);
+        int lastPageNumber =  result.getLastPage();
+        limit = limit > lastPageNumber ? lastPageNumber : limit;
+        List<PaxxoItem> items = new ArrayList<>(result.getCount());
+        items.addAll(result.getItems());
+        for (int current =1; current <= limit; current++) {
+            result = query("", "", current);
+            items.addAll(result.getItems());
+        }
+        return items;
     }
 
-    public PaxxoSearchResult search(String maker, String model) throws JAXBException {
-        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model);
+    public PaxxoSearchResult query(String maker, String model, int page) throws JAXBException {
+        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
     }
@@ -45,7 +57,7 @@ public class PaxxoApiClient {
         return restTemplate.getForObject(makerCountryIndexApi, PaxxoMakerIndices.class);
     }
 
-    private MultiValueMap<String, String> makeSearchForm(String maker, String model) {
+    private MultiValueMap<String, String> makeSearchForm(String maker, String model, int page) {
         MultiValueMap<String, String> searchForm = form();
         MessageFormat messageFormat;
         if (maker.equals("") && model.equals("")){
@@ -54,7 +66,8 @@ public class PaxxoApiClient {
             messageFormat = new MessageFormat(SPECIFIC_MAKER_AND_MODEL_QUERY);
         }
         String searchValue = messageFormat.format(new String[]{maker, model});
-        searchForm.add("search", searchValue);
+        searchForm.add("query", searchValue);
+        searchForm.add("page", String.valueOf(page));
         return searchForm;
     }
 

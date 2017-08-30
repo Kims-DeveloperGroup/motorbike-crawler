@@ -1,5 +1,6 @@
 package com.devoo.kim.api.passo;
 
+import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
 import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.bind.JAXBException;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -34,7 +37,7 @@ public class PaxxoApiClientTest {
 
         PaxxoSearchResult result;
         WHEN: {
-            result = paxxoApiClient.search(maker, model);
+            result = paxxoApiClient.query(maker, model, 0);
         }
 
         THEN: {
@@ -45,9 +48,9 @@ public class PaxxoApiClientTest {
     @Test
     public void shouldRetrieveAllItemsWhenNoSearchInputIsGiven() throws JAXBException {
 
-        PaxxoSearchResult result;
+        List<PaxxoItem> result;
         WHEN: {
-            result = paxxoApiClient.searchAll();
+            result = paxxoApiClient.searchAll(2);
         }
 
         THEN: {
