@@ -1,8 +1,12 @@
-package com.devoo.kim.domain;
+package com.devoo.kim.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import crawlercommons.fetcher.FetchedResult;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * Created by rikim on 2017. 7. 16..
