@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "passo", namespace = "")
 public class PaxxoSearchResult {
-
+    @Getter
     @XmlElement
-    private String count;
+    private int count;
 
     @XmlElementWrapper(name = "goods")
     @XmlElement(name = "item")
