@@ -43,7 +43,7 @@ public class PaxxoApiClientTest {
     }
 
     @Test
-    public void shouldRetrieveAllItemsByNoSearchInput() throws JAXBException {
+    public void shouldRetrieveAllItemsWhenNoSearchInputIsGiven() throws JAXBException {
 
         PaxxoSearchResult result;
         WHEN: {
@@ -56,7 +56,7 @@ public class PaxxoApiClientTest {
     }
 
     @Test
-    public void shouldRetrieveCountryAndMakerIndex() {
+    public void shouldRetrieveMakerIndex() {
         GIVEN: {}
 
         PaxxoMakerIndices index;
