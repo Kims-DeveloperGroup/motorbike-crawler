@@ -1,0 +1,11 @@
+spring:
+  profiles: test
+
+external:
+  naver:
+    cafe:
+      clientId: WubhieoC0PbQRncZgofe
+      clientSecret: tYAhfACYdU
+  paxxo:
+    country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=
+    item-search-api: http://bike.passo.co.kr/bike/index.php
