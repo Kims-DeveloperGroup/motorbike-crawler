@@ -38,7 +38,6 @@ public class PaxxoApiClient {
     public PaxxoSearchResult search(String maker, String model) throws JAXBException {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
-        Jaxb2RootElementHttpMessageConverter jaxbMessageConverter = new Jaxb2RootElementHttpMessageConverter();
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
     }
 
