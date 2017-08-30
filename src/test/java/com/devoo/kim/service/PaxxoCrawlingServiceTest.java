@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -57,16 +58,18 @@ public class PaxxoCrawlingServiceTest {
     }
 
     @Test
-    public void shouldRetrieveAllItems() {
+    public void shouldSaveAndUpdateItems() {
 
         PaxxoSearchResult searchResult;
         WHEN:
         {
             paxxoCrawlingService.updateItems();
+            doNothing().when(paxxoIndicesRepository).saveItems(any());
         }
 
         THEN:
         {
+            verify(paxxoIndicesRepository).saveItems(any());
         }
     }
 }
