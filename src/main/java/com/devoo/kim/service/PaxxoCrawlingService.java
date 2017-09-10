@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by rikim on 2017. 8. 14..
+ * Crawls items in paxxo.
  */
 public class PaxxoCrawlingService {
     private PaxxoApiClient paxxoApiClient;
@@ -23,11 +24,18 @@ public class PaxxoCrawlingService {
         this.paxxoIndicesRepository = indicesRepository;
     }
 
+    /**
+     * Crawls maker indices of paxxo
+     */
     public void updatePaxxoMakerIndices() {
         List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
         paxxoIndicesRepository.save(makerIndices);
     }
 
+    /**
+     * Crawl items as much as limited number of page and update in the repository
+     * @return the number of items newly updated items.
+     */
     public int updateItems() {
         List<PaxxoItem> items;
         try {
