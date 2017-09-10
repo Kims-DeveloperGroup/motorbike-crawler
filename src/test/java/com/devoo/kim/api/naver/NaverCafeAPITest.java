@@ -30,8 +30,10 @@ public class NaverCafeAPITest {
 
         ResponseEntity<String> response;
         WHEN: {
-            response = naverCafeAPI.search("naver", 1);
+            response = naverCafeAPI.search("naver", 2);
+            System.out.println(response.getBody());
         }
+
 
         THEN: {
             assertEquals(response.getStatusCode(), HttpStatus.OK);
