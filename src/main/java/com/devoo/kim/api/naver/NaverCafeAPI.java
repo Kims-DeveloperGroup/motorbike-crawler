@@ -45,8 +45,8 @@ public class NaverCafeAPI {
      * Send a requests to search api of Naver cafe
      * @param query query input to search
      * @param sort sorting method, order
-     * @param countOfResult limit count of items from search result
-     * @param start start index of items from result (default = 1).
+     * @param countOfResult limit count of items from search result (default =10, max = 100)
+     * @param start start index of items from result (default = 1, max = 1000).
      * @return
      */
     private ResponseEntity<String> doRequest(String query, String sort, int countOfResult, int start) {
