@@ -36,7 +36,7 @@ public class PaxxoApiClientIT {
 
         PaxxoItemMetadata result;
         WHEN: {
-            result = paxxoApiClient.getItemMetadata(makerInput, modelInput, 0);
+            result = paxxoApiClient.getItemMetadata(makerInput, modelInput);
         }
 
         THEN: {
