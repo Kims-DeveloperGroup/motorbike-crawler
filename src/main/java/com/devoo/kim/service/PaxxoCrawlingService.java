@@ -3,7 +3,6 @@ package com.devoo.kim.service;
 import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import com.devoo.kim.repository.PaxxoIndicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +31,7 @@ public class PaxxoCrawlingService {
     public int updateItems() {
         List<PaxxoItem> items;
         try {
-            items = paxxoApiClient.searchAll(searchItemLimit);
+            items = paxxoApiClient.getItems(searchItemLimit);
             paxxoIndicesRepository.saveItems(items);
         } catch (JAXBException e) {
             return 0;

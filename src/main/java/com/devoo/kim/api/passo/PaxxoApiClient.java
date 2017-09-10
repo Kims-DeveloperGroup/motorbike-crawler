@@ -34,25 +34,42 @@ public class PaxxoApiClient {
     private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
     private static final String ALL_ITEM_QUERY = "@(maker_idx:";
 
-    public List<PaxxoItem> searchAll(int limit) throws JAXBException {
+    /**
+     * Get Items from Paxxo. Items are not guaranteed to be in order.
+     * @param limitOfPage : the number of page to be retrieved.
+     * @return items
+     * @throws JAXBException in case of failure to parse items in xml.
+     */
+    public List<PaxxoItem> getItems(int limitOfPage) throws JAXBException {
         PaxxoSearchResult result = query("","", 0);
-        int lastPageNumber =  result.getLastPage();
-        limit = limit > lastPageNumber ? lastPageNumber : limit;
+        int lastPage =  result.getLastPage() > limitOfPage ? limitOfPage : result.getLastPage();
         List<PaxxoItem> items = new ArrayList<>(result.getCount());
         items.addAll(result.getItems());
-        for (int current =1; current <= limit; current++) {
+        for (int current =1; current <= lastPage; current++) {
             result = query("", "", current);
             items.addAll(result.getItems());
         }
         return items;
     }
 
+    /**
+     * Query items metadata, which contains count of items and pagination info.
+     * @param maker as a search input
+     * @param model as a search input
+     * @param page  page number of the items to search.
+     * @return PaxxoSearchResult that contains metadata of the item to search.
+     * @throws JAXBException
+     */
     public PaxxoSearchResult query(String maker, String model, int page) throws JAXBException {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
     }
 
+    /**
+     * Get information of maker indices in paxxo.
+     * @return
+     */
     public PaxxoMakerIndices getMakerIndices() {
         return restTemplate.getForObject(makerCountryIndexApi, PaxxoMakerIndices.class);
     }

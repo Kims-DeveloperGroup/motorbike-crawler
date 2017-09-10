@@ -55,7 +55,7 @@ public class PaxxoApiClientIT {
 
         List<PaxxoItem> result;
         WHEN: {
-            result = paxxoApiClient.searchAll(limit);
+            result = paxxoApiClient.getItems(limit);
         }
 
         THEN: {
