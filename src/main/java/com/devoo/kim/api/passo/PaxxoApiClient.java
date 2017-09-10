@@ -54,10 +54,11 @@ public class PaxxoApiClient {
 
     /**
      * Query items metadata, which contains count of items and pagination info.
+     * No Item data is returned, but only metadata of stored data for the item.
      * @param maker as a search input
      * @param model as a search input
      * @param page  page number of the items to search.
-     * @return PaxxoItemMetadata that contains metadata of the item to search.
+     * @return PaxxoItemMetadata that contains metadata of the item for a given maker and a given model .
      * @throws JAXBException
      */
     public PaxxoItemMetadata queryItemInformation(String maker, String model, int page) throws JAXBException {
