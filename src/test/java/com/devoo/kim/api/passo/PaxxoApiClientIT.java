@@ -1,8 +1,8 @@
 package com.devoo.kim.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoItem;
+import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,9 +34,9 @@ public class PaxxoApiClientIT {
             modelInput = "366";
         }
 
-        PaxxoSearchResult result;
+        PaxxoItemMetadata result;
         WHEN: {
-            result = paxxoApiClient.query(makerInput, modelInput, 0);
+            result = paxxoApiClient.queryItemInformation(makerInput, modelInput, 0);
         }
 
         THEN: {

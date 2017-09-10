@@ -12,7 +12,7 @@ import java.util.List;
  * Created by rikim on 2017. 7. 30..
  */
 @XmlRootElement(name = "passo", namespace = "")
-public class PaxxoSearchResult {
+public class PaxxoItemMetadata {
     @Getter
     @XmlElement
     private int count;

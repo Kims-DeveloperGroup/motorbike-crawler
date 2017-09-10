@@ -1,8 +1,8 @@
 package com.devoo.kim.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoItem;
+import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,12 +41,12 @@ public class PaxxoApiClient {
      * @throws JAXBException in case of failure to parse items in xml.
      */
     public List<PaxxoItem> getItems(int limitOfPage) throws JAXBException {
-        PaxxoSearchResult result = query("","", 0);
+        PaxxoItemMetadata result = queryItemInformation("","", 0);
         int lastPage =  result.getLastPage() > limitOfPage ? limitOfPage : result.getLastPage();
         List<PaxxoItem> items = new ArrayList<>(result.getCount());
         items.addAll(result.getItems());
         for (int current =1; current <= lastPage; current++) {
-            result = query("", "", current);
+            result = queryItemInformation("", "", current);
             items.addAll(result.getItems());
         }
         return items;
@@ -57,13 +57,13 @@ public class PaxxoApiClient {
      * @param maker as a search input
      * @param model as a search input
      * @param page  page number of the items to search.
-     * @return PaxxoSearchResult that contains metadata of the item to search.
+     * @return PaxxoItemMetadata that contains metadata of the item to search.
      * @throws JAXBException
      */
-    public PaxxoSearchResult query(String maker, String model, int page) throws JAXBException {
+    public PaxxoItemMetadata queryItemInformation(String maker, String model, int page) throws JAXBException {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
-        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
+        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItemMetadata.class);
     }
 
     /**

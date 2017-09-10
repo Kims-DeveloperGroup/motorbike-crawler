@@ -3,7 +3,7 @@ package com.devoo.kim.service;
 import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
+import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.repository.PaxxoIndicesRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +60,7 @@ public class PaxxoCrawlingServiceTest {
     @Test
     public void shouldSaveAndUpdateItems() {
 
-        PaxxoSearchResult searchResult;
+        PaxxoItemMetadata searchResult;
         WHEN:
         {
             paxxoCrawlingService.updateItems();
