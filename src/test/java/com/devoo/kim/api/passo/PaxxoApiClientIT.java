@@ -3,6 +3,7 @@ package com.devoo.kim.api.passo;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
 import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,33 +12,31 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.bind.JAXBException;
-
 import java.util.List;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertNotNull;
 /**
  * Created by rikim on 2017. 7. 30..
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {PaxxoApiClient.class})
 @ActiveProfiles("test")
-public class PaxxoApiClientTest {
+public class PaxxoApiClientIT {
     @Autowired
     private PaxxoApiClient paxxoApiClient;
 
     @Test
     public void shouldRetrieveSearchResultDataByMakerAndModel() throws JAXBException {
-        String maker;
-        String model;
+        String makerInput;
+        String modelInput;
         GIVE: {
-            maker = "34";
-            model = "366";
+            makerInput = "34";
+            modelInput = "366";
         }
 
         PaxxoSearchResult result;
         WHEN: {
-            result = paxxoApiClient.query(maker, model, 0);
+            result = paxxoApiClient.query(makerInput, modelInput, 0);
         }
 
         THEN: {
@@ -46,15 +45,21 @@ public class PaxxoApiClientTest {
     }
 
     @Test
-    public void shouldRetrieveAllItemsWhenNoSearchInputIsGiven() throws JAXBException {
+    public void shouldRetrieveLimitedNumberOfItemsWhenNoSearchInputAndSpecificLimitNumberIsGiven() throws JAXBException {
+
+        int limit;
+        GIVEN:
+        {
+            limit = 2;
+        }
 
         List<PaxxoItem> result;
         WHEN: {
-            result = paxxoApiClient.searchAll(2);
+            result = paxxoApiClient.searchAll(limit);
         }
 
         THEN: {
-            assertNotNull(result);
+            Assertions.assertThat(result.size()).isEqualTo(limit);
         }
     }
 
