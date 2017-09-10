@@ -42,13 +42,27 @@ public class PaxxoApiClient {
      * @throws JAXBException in case of failure to parse items in xml.
      */
     public List<PaxxoItem> getItems(int limitOfPage) throws JAXBException {
-        PaxxoItemMetadata metadata = queryItemInformation("", "");
+        PaxxoItemMetadata metadata = getItemMetadata("", "");
         int lastPage =  metadata.getLastPage() > limitOfPage ? limitOfPage : metadata.getLastPage();
         List<PaxxoItem> items = new ArrayList<>();
         for (int current =0; current <= lastPage; current++) {
             items.addAll(getItemsInPage("", "", current));
         }
         return items;
+    }
+
+    /**
+     * Get item's metadata, which contains count of items and pagination info.
+     * No Item data is returned, but only metadata of stored data for the item.
+     * @param maker as a search input
+     * @param model as a search input
+     * @return PaxxoItemMetadata that contains metadata of the item for a given maker and a given model .
+     * @throws JAXBException
+     */
+    public PaxxoItemMetadata getItemMetadata(String maker, String model) throws JAXBException {
+        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, 0);
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
+        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItemMetadata.class);
     }
 
     /**
@@ -64,20 +78,6 @@ public class PaxxoApiClient {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItems.class).getItems();
-    }
-
-    /**
-     * Query items metadata, which contains count of items and pagination info.
-     * No Item data is returned, but only metadata of stored data for the item.
-     * @param maker as a search input
-     * @param model as a search input
-     * @return PaxxoItemMetadata that contains metadata of the item for a given maker and a given model .
-     * @throws JAXBException
-     */
-    public PaxxoItemMetadata queryItemInformation(String maker, String model) throws JAXBException {
-        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, 0);
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
-        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItemMetadata.class);
     }
 
     /**
