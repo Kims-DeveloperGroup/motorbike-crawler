@@ -29,6 +29,7 @@ public class NaverCafeAPI {
     private String clientSeceret;
     private RestTemplate restTemplate = new RestTemplate();
     private String SIMILARITY_ORDER = "sim";
+    private String DATETIME_ORDER = "date";
 
     /**
      * Search items in Naver cafe
@@ -45,7 +46,7 @@ public class NaverCafeAPI {
      * @param query query input to search
      * @param sort sorting method, order
      * @param countOfResult limit count of items from search result
-     * @param start start index of items from result.
+     * @param start start index of items from result (default = 1).
      * @return
      */
     private ResponseEntity<String> doRequest(String query, String sort, int countOfResult, int start) {
