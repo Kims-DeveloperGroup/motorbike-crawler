@@ -41,13 +41,13 @@ public class PaxxoApiClient {
      * @throws JAXBException in case of failure to parse items in xml.
      */
     public List<PaxxoItem> getItems(int limitOfPage) throws JAXBException {
-        PaxxoItemMetadata result = queryItemInformation("","", 0);
-        int lastPage =  result.getLastPage() > limitOfPage ? limitOfPage : result.getLastPage();
-        List<PaxxoItem> items = new ArrayList<>(result.getCount());
-        items.addAll(result.getItems());
-        for (int current =1; current <= lastPage; current++) {
-            result = queryItemInformation("", "", current);
-            items.addAll(result.getItems());
+        PaxxoItemMetadata metadata = queryItemInformation("","", 0);
+        int lastPage =  metadata.getLastPage() > limitOfPage ? limitOfPage : metadata.getLastPage();
+        List<PaxxoItem> items = new ArrayList<>(metadata.getCount());
+        items.addAll(metadata.getItems());
+        for (int current =0; current <= lastPage; current++) {
+            metadata = queryItemInformation("", "", current);
+            items.addAll(metadata.getItems());
         }
         return items;
     }
