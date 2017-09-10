@@ -17,7 +17,7 @@ public class PaxxoCrawlingService {
     private PaxxoApiClient paxxoApiClient;
     private PaxxoIndicesRepository paxxoIndicesRepository;
 
-    private int searchItemLimit = 3;
+    private int pageLimit = 3;
     public PaxxoCrawlingService(@Autowired PaxxoApiClient paxxoApiClient,
                                 @Autowired PaxxoIndicesRepository indicesRepository) {
         this.paxxoApiClient = paxxoApiClient;
@@ -39,7 +39,7 @@ public class PaxxoCrawlingService {
     public int updateItems() {
         List<PaxxoItem> items;
         try {
-            items = paxxoApiClient.getItems(searchItemLimit);
+            items = paxxoApiClient.getItems(pageLimit);
             paxxoIndicesRepository.saveItems(items);
         } catch (JAXBException e) {
             return 0;
