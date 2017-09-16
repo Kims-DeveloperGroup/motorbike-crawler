@@ -46,14 +46,14 @@ public class NaverCafeAPI {
     /**
      * Search items in Naver cafe
      * @param query
-     * @param pageLimit  limit of items to retrieve (100 items in a page)
+     * @param pageLimit  the limit number of pages to be retrieved. (100 items in a page)
      * @return
      */
     public List<CafeItem> search(String query, int pageLimit) {
         List<CafeItem> items = new ArrayList<>();
         NaverSearchMetadata metadata = getSerachMetadata(query);
-        long lastPage = metadata.getLastPage(pageLimit)
-        for (int page =0 ; page < lastPage; page++) {
+        long lastPage = metadata.getLastPageNumber(pageLimit);
+        for (int page = 0; page <= lastPage; page++) {
             items.addAll(getItemsInPage(query, page));
         }
         return items;
