@@ -7,22 +7,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by rikim on 2017. 7. 17..
  */
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {NaverCafeAPI.class})
 public class NaverCafeAPITest {
     @Autowired
     private NaverCafeAPI naverCafeAPI;
@@ -33,16 +28,19 @@ public class NaverCafeAPITest {
     @Test
     public void shouldItemsBeRetrievedAsMuchAsSizeOfPage() {
         String query;
-        GIVEN: {
+        GIVEN:
+        {
             query = "naver";
         }
         List<CafeItem> items;
-        WHEN: {
+        WHEN:
+        {
             items = naverCafeAPI.search("naver", 1);
         }
 
         int expectedItems = this.pageSize;
-        THEN: {
+        THEN:
+        {
             Assertions.assertThat(items).size().isEqualTo(expectedItems);
         }
         // TODO: 2017. 9. 10. Latest Work ; Json Conversion error to Domain class

@@ -26,8 +26,10 @@ import java.util.List;
 public class NaverCafeAPI {
     private final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
     private final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
-    private final String API_URL = "https://openapi.naver.com/v1/search/cafearticle.json";
     private RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${external.naver.cafe.url}")
+    private String cafeApiUrl;
 
     @Value("${external.naver.cafe.clientId}")
     private String clientId;
@@ -82,7 +84,7 @@ public class NaverCafeAPI {
      * @return
      */
     private ResponseEntity<NaverSearchItems> doRequest(String query, String sort, int countOfResult, int start) {
-        URI url = UriComponentsBuilder.fromHttpUrl(API_URL)
+        URI url = UriComponentsBuilder.fromHttpUrl(cafeApiUrl)
                 .queryParam("query", query)
                 .queryParam("sort", sort)
                 .queryParam("display", countOfResult)
