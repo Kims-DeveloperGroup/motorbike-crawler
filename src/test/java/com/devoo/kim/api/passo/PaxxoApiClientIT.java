@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,6 +25,9 @@ import static org.junit.Assert.assertNotNull;
 public class PaxxoApiClientIT {
     @Autowired
     private PaxxoApiClient paxxoApiClient;
+
+    @Value("${external.paxxo.pagination.size}")
+    private int pageSize;
 
     @Test
     public void shouldRetrieveSearchResultDataByMakerAndModel() throws JAXBException {
@@ -47,19 +51,19 @@ public class PaxxoApiClientIT {
     @Test
     public void shouldRetrieveLimitedNumberOfItemsWhenNoSearchInputAndSpecificLimitNumberIsGiven() throws JAXBException {
 
-        int limit;
+        int pageLimit;
         GIVEN:
         {
-            limit = 2;
+            pageLimit = 2;
         }
 
         List<PaxxoItem> result;
         WHEN: {
-            result = paxxoApiClient.getItems(limit);
+            result = paxxoApiClient.getItems(pageLimit);
         }
-
+        int expectedItems = this.pageSize * pageLimit;
         THEN: {
-            Assertions.assertThat(result.size()).isEqualTo(limit);
+            Assertions.assertThat(result.size()).isEqualTo(expectedItems);
         }
     }
 
