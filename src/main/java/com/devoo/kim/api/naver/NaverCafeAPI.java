@@ -64,6 +64,7 @@ public class NaverCafeAPI {
     }
 
     private NaverSearchMetadata getSerachMetadata(String query) {
+        NaverSearchItems items = doRequest(query).getBody();
         return doRequest(query).getBody();
     }
 
