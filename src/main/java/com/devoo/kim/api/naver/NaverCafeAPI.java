@@ -24,8 +24,8 @@ import java.util.List;
  */
 @Service
 public class NaverCafeAPI {
-    private final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
-    private final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
+    private static final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
+    private static final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
     private RestTemplate restTemplate = new RestTemplate();
 
     @Value("${external.naver.cafe.url}")
@@ -76,7 +76,6 @@ public class NaverCafeAPI {
      * @return search metadata of naver cafe
      */
     private NaverSearchMetadata getSerachMetadata(String query) {
-        NaverSearchItems items = doRequest(query).getBody();
         return doRequest(query).getBody();
     }
 
@@ -109,7 +108,6 @@ public class NaverCafeAPI {
         MultiValueMap<String, String> auth = new LinkedMultiValueMap<>();
         auth.add(CLIENT_ID_HEADER, clientId);
         auth.add(CLIENT_SECRET_HEADER, clientSeceret);
-        HttpEntity<Void> httpHeader = new HttpEntity<>(auth);
-        return httpHeader;
+        return new HttpEntity<>(auth);
     }
 }
