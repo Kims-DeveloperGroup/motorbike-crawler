@@ -70,6 +70,11 @@ public class NaverCafeAPI {
         return Arrays.asList(items);
     }
 
+    /**
+     * Gets search metadata for a given query. Search metadata includes info for item-traversing and pagination.
+     * @param query search input
+     * @return search metadata of naver cafe
+     */
     private NaverSearchMetadata getSerachMetadata(String query) {
         NaverSearchItems items = doRequest(query).getBody();
         return doRequest(query).getBody();

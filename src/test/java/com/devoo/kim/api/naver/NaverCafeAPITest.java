@@ -43,6 +43,5 @@ public class NaverCafeAPITest {
         {
             Assertions.assertThat(items).size().isEqualTo(expectedItems);
         }
-        // TODO: 2017. 9. 10. Latest Work ; Json Conversion error to Domain class
     }
 }
