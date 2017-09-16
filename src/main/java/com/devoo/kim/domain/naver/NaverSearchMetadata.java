@@ -23,8 +23,8 @@ public class NaverSearchMetadata {
         long numberOfPages = (this.totalItems / NaverCafeAPI.pageSize);
         numberOfPages = (this.totalItems % NaverCafeAPI.pageSize > 0) ? ++numberOfPages : numberOfPages;
         if (numberOfPages < pageLimit) {
-            return numberOfPages;
+            return numberOfPages - 1;
         }
-        return pageLimit;
+        return pageLimit - 1;
     }
 }
