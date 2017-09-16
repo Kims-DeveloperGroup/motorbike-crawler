@@ -3,6 +3,7 @@ package com.devoo.kim.api.naver;
 import com.devoo.kim.domain.naver.CafeItem;
 import com.devoo.kim.domain.naver.NaverSearchItems;
 import com.devoo.kim.domain.naver.NaverSearchMetadata;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -37,11 +38,14 @@ public class NaverCafeAPI {
     @Value("${external.naver.cafe.clientSecret}")
     private String clientSeceret;
 
-    @Value("${external.naver.pagination.size}")
-    public static int pageSize;
-
     private String SIMILARITY_ORDER = "sim";
     private String DATETIME_ORDER = "date";
+
+    public static int pageSize;
+
+    public NaverCafeAPI(@Value("${external.naver.pagination.size}") int pageSize) {
+        NaverCafeAPI.pageSize = pageSize;
+    }
 
     /**
      * Search items in Naver cafe
