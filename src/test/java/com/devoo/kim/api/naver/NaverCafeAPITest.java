@@ -1,40 +1,47 @@
 package com.devoo.kim.api.naver;
 
+import com.devoo.kim.domain.naver.CafeItem;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
 /**
  * Created by rikim on 2017. 7. 17..
  */
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {NaverCafeAPI.class})
 public class NaverCafeAPITest {
     @Autowired
-    NaverCafeAPI naverCafeAPI;
+    private NaverCafeAPI naverCafeAPI;
+
+    @Value("${external.naver.pagination.size}")
+    private int pageSize;
 
     @Test
-    public void shouldResponseCodeBe200WhenSendingRequet() {
+    public void shouldItemsBeRetrievedAsMuchAsSizeOfPage() {
         String query;
-        GIVEN: {
+        GIVEN:
+        {
             query = "naver";
         }
-
-        ResponseEntity<String> response;
-        WHEN: {
-            response = naverCafeAPI.search("naver", 1);
+        List<CafeItem> items;
+        WHEN:
+        {
+            items = naverCafeAPI.search("naver", 1);
         }
 
-        THEN: {
-            assertEquals(response.getStatusCode(), HttpStatus.OK);
+        int expectedItems = this.pageSize;
+        THEN:
+        {
+            Assertions.assertThat(items).size().isEqualTo(expectedItems);
         }
     }
 }
