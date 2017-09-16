@@ -4,7 +4,7 @@ import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @Data
-public class SearchMetadata {
+public class NaverSearchMetadata {
 
     @JsonProperty("total")
     private long totalItems;

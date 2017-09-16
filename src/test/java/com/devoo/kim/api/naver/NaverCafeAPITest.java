@@ -1,5 +1,7 @@
 package com.devoo.kim.api.naver;
 
+import com.devoo.kim.domain.naver.CafeItem;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +24,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class NaverCafeAPITest {
     @Autowired
-    NaverCafeAPI naverCafeAPI;
+    private NaverCafeAPI naverCafeAPI;
 
     @Test
     public void shouldResponseCodeBe200WhenSendingRequet() {
@@ -27,16 +32,14 @@ public class NaverCafeAPITest {
         GIVEN: {
             query = "naver";
         }
-
-        ResponseEntity<String> response;
+        List<CafeItem> items = new ArrayList<>();
         WHEN: {
-            response = naverCafeAPI.search("naver", 2);
-            System.out.println(response.getBody());
+            items = naverCafeAPI.search("naver", 1);
         }
-
 
         THEN: {
-            assertEquals(response.getStatusCode(), HttpStatus.OK);
+            Assertions.assertThat(items).size().isEqualTo(100);
         }
+        // TODO: 2017. 9. 10. Latest Work ; Json Conversion error to Domain class
     }
 }
