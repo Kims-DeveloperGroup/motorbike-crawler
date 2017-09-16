@@ -38,7 +38,7 @@ public class NaverCafeAPI {
     private String clientSeceret;
 
     @Value("${external.naver.pagination.size}")
-    private int pageSize;
+    public static int pageSize;
 
     private String SIMILARITY_ORDER = "sim";
     private String DATETIME_ORDER = "date";
@@ -52,7 +52,7 @@ public class NaverCafeAPI {
     public List<CafeItem> search(String query, int limitOfPage) {
         List<CafeItem> items = new ArrayList<>();
         NaverSearchMetadata metadata = getSerachMetadata(query);
-        long lastPage = (metadata.getTotalItems()/100) >limitOfPage ? limitOfPage : metadata.getTotalItems();
+        long lastPage = metadata.getLastPage(limitOfPage)
         for (int page =0 ; page < lastPage; page++) {
             items.addAll(getItemsInPage(query, page));
         }
