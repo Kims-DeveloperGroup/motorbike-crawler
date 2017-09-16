@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +27,23 @@ public class NaverCafeAPITest {
     @Autowired
     private NaverCafeAPI naverCafeAPI;
 
+    @Value("${external.naver.pagination.size}")
+    private int pageSize;
+
     @Test
-    public void shouldResponseCodeBe200WhenSendingRequet() {
+    public void shouldItemsBeRetrievedAsMuchAsSizeOfPage() {
         String query;
         GIVEN: {
             query = "naver";
         }
-        List<CafeItem> items = new ArrayList<>();
+        List<CafeItem> items;
         WHEN: {
             items = naverCafeAPI.search("naver", 1);
         }
 
+        int expectedItems = this.pageSize;
         THEN: {
-            Assertions.assertThat(items).size().isEqualTo(100);
+            Assertions.assertThat(items).size().isEqualTo(expectedItems);
         }
         // TODO: 2017. 9. 10. Latest Work ; Json Conversion error to Domain class
     }

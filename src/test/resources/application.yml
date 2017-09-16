@@ -3,6 +3,8 @@ spring:
 
 external:
   naver:
+    pagination:
+      size: 100
     cafe:
       clientId: WubhieoC0PbQRncZgofe
       clientSecret: tYAhfACYdU

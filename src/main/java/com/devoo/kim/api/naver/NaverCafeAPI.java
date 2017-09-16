@@ -27,12 +27,17 @@ public class NaverCafeAPI {
     private final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
     private final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
     private final String API_URL = "https://openapi.naver.com/v1/search/cafearticle.json";
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Value("${external.naver.cafe.clientId}")
     private String clientId;
+
     @Value("${external.naver.cafe.clientSecret}")
     private String clientSeceret;
-    private RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${external.naver.pagination.size}")
+    private int pageSize;
+
     private String SIMILARITY_ORDER = "sim";
     private String DATETIME_ORDER = "date";
 
@@ -59,7 +64,7 @@ public class NaverCafeAPI {
      * @return
      */
     private List<CafeItem> getItemsInPage(String query, int page) {
-        CafeItem[] items = doRequest(query, SIMILARITY_ORDER, 100, 100*page).getBody().getCafeItems();
+        CafeItem[] items = doRequest(query, SIMILARITY_ORDER, 100, 100*page + 1).getBody().getCafeItems();
         return Arrays.asList(items);
     }
 
