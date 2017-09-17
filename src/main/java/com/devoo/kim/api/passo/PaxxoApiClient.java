@@ -1,8 +1,9 @@
 package com.devoo.kim.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoItem;
+import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
+import com.devoo.kim.domain.paxxo.PaxxoItems;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,25 +35,55 @@ public class PaxxoApiClient {
     private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
     private static final String ALL_ITEM_QUERY = "@(maker_idx:";
 
-    public List<PaxxoItem> searchAll(int limit) throws JAXBException {
-        PaxxoSearchResult result = query("","", 0);
-        int lastPageNumber =  result.getLastPage();
-        limit = limit > lastPageNumber ? lastPageNumber : limit;
-        List<PaxxoItem> items = new ArrayList<>(result.getCount());
-        items.addAll(result.getItems());
-        for (int current =1; current <= limit; current++) {
-            result = query("", "", current);
-            items.addAll(result.getItems());
+    /**
+     * Get Items from Paxxo. Items are not guaranteed to be in order.
+     * @param pageLimit : the number of page to be retrieved.
+     * @return items
+     * @throws JAXBException in case of failure to parse items in xml.
+     */
+    public List<PaxxoItem> getItems(int pageLimit) throws JAXBException {
+        PaxxoItemMetadata metadata = getItemMetadata("", "");
+        int lastPage = metadata.getLastPageNumber(pageLimit);
+        List<PaxxoItem> items = new ArrayList<>();
+        for (int current =0; current <= lastPage; current++) {
+            items.addAll(getItemsInPage("", "", current));
         }
         return items;
     }
 
-    public PaxxoSearchResult query(String maker, String model, int page) throws JAXBException {
-        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
+    /**
+     * Get item's metadata, which contains count of items and pagination info.
+     * No Item data is returned, but only metadata of stored data for the item.
+     * @param maker as a search input
+     * @param model as a search input
+     * @return PaxxoItemMetadata that contains metadata of the item for a given maker and a given model .
+     * @throws JAXBException
+     */
+    public PaxxoItemMetadata getItemMetadata(String maker, String model) throws JAXBException {
+        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, 0);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
-        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoSearchResult.class);
+        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItemMetadata.class);
     }
 
+    /**
+     * Get Items only in a given page for a given maker and model.
+     * If no maker and model is specified, unconditionally items are retrieved and  unordered.
+     *
+     * @param maker as a search input
+     * @param model as a search input
+     * @param page  page number of item
+     * @return items in the given page
+     */
+    private List<PaxxoItem> getItemsInPage(String maker, String model, int page) {
+        MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
+        return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItems.class).getItems();
+    }
+
+    /**
+     * Get information of maker indices in paxxo.
+     * @return
+     */
     public PaxxoMakerIndices getMakerIndices() {
         return restTemplate.getForObject(makerCountryIndexApi, PaxxoMakerIndices.class);
     }

@@ -2,16 +2,21 @@ package com.devoo.kim.service;
 
 import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
+import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
+import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.repository.PaxxoIndicesRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.xml.bind.JAXBException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
@@ -58,17 +63,24 @@ public class PaxxoCrawlingServiceTest {
     }
 
     @Test
-    public void shouldSaveAndUpdateItems() {
+    public void shouldSaveAndUpdateItems() throws JAXBException {
+        List<PaxxoItem> items = new ArrayList<>();
+        GIVEN:
+        {
+            items.add(new PaxxoItem());
+            when(paxxoApiClient.getItems(3)).thenReturn(items);
+            doNothing().when(paxxoIndicesRepository).saveItems(any());
+        }
 
-        PaxxoSearchResult searchResult;
+        int updated = 0;
         WHEN:
         {
-            paxxoCrawlingService.updateItems();
-            doNothing().when(paxxoIndicesRepository).saveItems(any());
+            updated = paxxoCrawlingService.updateItems();
         }
 
         THEN:
         {
+            Assertions.assertThat(updated).isEqualTo(items.size());
             verify(paxxoIndicesRepository).saveItems(any());
         }
     }

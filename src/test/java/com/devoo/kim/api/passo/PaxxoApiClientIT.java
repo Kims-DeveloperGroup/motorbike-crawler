@@ -1,12 +1,13 @@
 package com.devoo.kim.api.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoItem;
+import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoSearchResult;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,6 +26,9 @@ public class PaxxoApiClientIT {
     @Autowired
     private PaxxoApiClient paxxoApiClient;
 
+    @Value("${external.paxxo.pagination.size}")
+    private int pageSize;
+
     @Test
     public void shouldRetrieveSearchResultDataByMakerAndModel() throws JAXBException {
         String makerInput;
@@ -34,9 +38,9 @@ public class PaxxoApiClientIT {
             modelInput = "366";
         }
 
-        PaxxoSearchResult result;
+        PaxxoItemMetadata result;
         WHEN: {
-            result = paxxoApiClient.query(makerInput, modelInput, 0);
+            result = paxxoApiClient.getItemMetadata(makerInput, modelInput);
         }
 
         THEN: {
@@ -47,19 +51,19 @@ public class PaxxoApiClientIT {
     @Test
     public void shouldRetrieveLimitedNumberOfItemsWhenNoSearchInputAndSpecificLimitNumberIsGiven() throws JAXBException {
 
-        int limit;
+        int pageLimit;
         GIVEN:
         {
-            limit = 2;
+            pageLimit = 2;
         }
 
         List<PaxxoItem> result;
         WHEN: {
-            result = paxxoApiClient.searchAll(limit);
+            result = paxxoApiClient.getItems(pageLimit);
         }
-
+        int expectedItems = this.pageSize * pageLimit;
         THEN: {
-            Assertions.assertThat(result.size()).isEqualTo(limit);
+            Assertions.assertThat(result.size()).isEqualTo(expectedItems);
         }
     }
 
