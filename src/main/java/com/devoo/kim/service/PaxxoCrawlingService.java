@@ -33,7 +33,7 @@ public class PaxxoCrawlingService {
     }
 
     /**
-     * Crawl items as much as limited number of page and update in the repository
+     * Crawls items as much as the limited number of pages, and updates in the repository
      * @return the number of items newly updated items.
      */
     public int updateItems() {
