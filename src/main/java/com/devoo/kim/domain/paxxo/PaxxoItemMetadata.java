@@ -17,6 +17,7 @@ public class PaxxoItemMetadata {
     @XmlElement(name = "page")
     private PaxxoPage page;
 
+<<<<<<< HEAD
     /**
      * Gets the last page number of search result. (size of page equals to item counts.)
      * Also last page number should be equal or less than page limit.
@@ -31,5 +32,9 @@ public class PaxxoItemMetadata {
             return page.getLastPage();
         }
         return pageLimit - 1;
+=======
+    public int getLastPage() {
+        return page.getLastPage();
+>>>>>>> url-generation
     }
 }

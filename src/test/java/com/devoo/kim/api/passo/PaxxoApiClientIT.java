@@ -59,7 +59,11 @@ public class PaxxoApiClientIT {
 
         List<PaxxoItem> result;
         WHEN: {
+<<<<<<< HEAD
             result = paxxoApiClient.getItems(pageLimit);
+=======
+            result = paxxoApiClient.getItems(limit);
+>>>>>>> url-generation
         }
         int expectedItems = this.pageSize * pageLimit;
         THEN: {

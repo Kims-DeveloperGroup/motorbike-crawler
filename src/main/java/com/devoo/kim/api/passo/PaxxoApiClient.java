@@ -37,6 +37,7 @@ public class PaxxoApiClient {
 
     /**
      * Get Items from Paxxo. Items are not guaranteed to be in order.
+<<<<<<< HEAD
      * @param pageLimit : the number of page to be retrieved.
      * @return items
      * @throws JAXBException in case of failure to parse items in xml.
@@ -44,6 +45,15 @@ public class PaxxoApiClient {
     public List<PaxxoItem> getItems(int pageLimit) throws JAXBException {
         PaxxoItemMetadata metadata = getItemMetadata("", "");
         int lastPage = metadata.getLastPageNumber(pageLimit);
+=======
+     * @param limitOfPage : the number of page to be retrieved.
+     * @return items
+     * @throws JAXBException in case of failure to parse items in xml.
+     */
+    public List<PaxxoItem> getItems(int limitOfPage) throws JAXBException {
+        PaxxoItemMetadata metadata = getItemMetadata("", "");
+        int lastPage =  metadata.getLastPage() > limitOfPage ? limitOfPage : metadata.getLastPage();
+>>>>>>> url-generation
         List<PaxxoItem> items = new ArrayList<>();
         for (int current =0; current <= lastPage; current++) {
             items.addAll(getItemsInPage("", "", current));

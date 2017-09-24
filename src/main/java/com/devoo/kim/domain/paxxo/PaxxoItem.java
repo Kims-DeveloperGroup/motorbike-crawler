@@ -31,4 +31,6 @@ public class PaxxoItem {
 
     @XmlElement(name = "update_date")
     String updateDate;
+
+    String url;
 }

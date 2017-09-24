@@ -47,4 +47,7 @@ public class PaxxoCrawlingService {
         return items.size();
     }
 
+    public void generateUrlOfItems() {
+    }
+
 }
