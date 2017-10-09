@@ -4,7 +4,6 @@ import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.repository.PaxxoIndicesRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -18,12 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by rikim on 2017. 8. 14..
@@ -83,20 +79,6 @@ public class PaxxoCrawlingServiceTest {
         {
             Assertions.assertThat(updated).isEqualTo(items.size());
             verify(paxxoIndicesRepository).saveItems(any());
-        }
-    }
-
-    @Test
-    public void shouldUrlOfItemsBeGenerated() {
-        WHEN:
-        {
-            paxxoCrawlingService.generateUrlOfItems();
-        }
-
-        THEN:
-        {
-            fail("Not Implemented yet");
-
         }
     }
 }
