@@ -1,7 +1,10 @@
 package com.devoo.kim.domain.paxxo;
 
+import lombok.Getter;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.text.MessageFormat;
 
 /**
  * Created by rikim on 2017. 8. 12..
@@ -32,5 +35,13 @@ public class PaxxoItem {
     @XmlElement(name = "update_date")
     String updateDate;
 
-    String url;
+    @XmlElement(name = "state")
+    int salesStatus;
+
+    @Getter
+    private String url;
+
+    public void generateUrl(MessageFormat itemUrlFormatter) {
+        this.url = itemUrlFormatter.format(new String[]{String.valueOf(this.id)});
+    }
 }
