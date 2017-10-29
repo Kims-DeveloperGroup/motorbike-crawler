@@ -2,6 +2,8 @@ package com.devoo.kim.repository;
 
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -11,6 +13,12 @@ import java.util.Collection;
  */
 @Repository
 public class PaxxoIndicesRepository {
+    private ElasticsearchTemplate esTemplate;
+
+    @Autowired
+    public PaxxoIndicesRepository(ElasticsearchTemplate esTemplateBean) {
+        this.esTemplate = esTemplateBean;
+    }
 
     public void save(Collection<Maker> makers) {}
 
