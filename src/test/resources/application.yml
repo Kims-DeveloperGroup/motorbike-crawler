@@ -15,3 +15,12 @@ external:
     country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=
     item-search-api: http://bike.passo.co.kr/bike/index.php
     item-url-pattern: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=home#HIS_ID:search_mode=country&order_by=&num=0&idx={0}
+
+---
+spring:
+  profiles: local
+
+elasticsearch:
+  host: 127.0.0.1
+  port: 9300
+  clustername: local-es

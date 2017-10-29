@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import java.util.List;
 
-public class PaxxoItemRepository implements ElasticsearchRepository<PaxxoItem, Long> {
+public interface PaxxoItemRepository implements ElasticsearchRepository<PaxxoItem, Long> {
 
     List<PaxxoItem> findByModel(String model);
 }
