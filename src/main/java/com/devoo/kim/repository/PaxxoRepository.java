@@ -11,11 +11,11 @@ import java.util.Collection;
  * Created by rikim on 2017. 8. 22..
  */
 @Repository
-public class PaxxoIndicesRepository {
+public class PaxxoRepository {
     private final PaxxoItemRepository itemRepository;
 
     @Autowired
-    public PaxxoIndicesRepository(PaxxoItemRepository paxxoItemRepository) {
+    public PaxxoRepository(PaxxoItemRepository paxxoItemRepository) {
         this.itemRepository = paxxoItemRepository;
     }
 
