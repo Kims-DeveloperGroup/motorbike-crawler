@@ -16,17 +16,17 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com.devoo.kim.repository")
+@EnableElasticsearchRepositories(basePackages = "com.devoo.kim.repository.paxxo")
 public class ElasticSearchConfig {
 
     @Value("${elasticsearch.host}")
-    private String EsHost;
+    private String esHost;
 
     @Value("${elasticsearch.port}")
-    private int EsPort;
+    private String esPort;
 
     @Value("${elasticsearch.clustername}")
-    private String EsClusterName;
+    private String esClusterName;
 
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() throws UnknownHostException {
@@ -36,12 +36,12 @@ public class ElasticSearchConfig {
     @Bean
     public Client esClient() throws UnknownHostException {
         Settings esSettings = Settings.builder()
-                .put("cluster.name", EsClusterName)
+                .put("cluster.name", esClusterName)
                 .build();
 
         return new PreBuiltTransportClient(esSettings)
                 .addTransportAddress(
-                        new InetSocketTransportAddress(InetAddress.getByName(EsHost), EsPort)
+                        new InetSocketTransportAddress(InetAddress.getByName(esHost), Integer.parseInt(esPort))
                 );
     }
 }
