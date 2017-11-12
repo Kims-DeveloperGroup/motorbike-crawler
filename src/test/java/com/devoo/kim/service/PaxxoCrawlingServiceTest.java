@@ -46,7 +46,7 @@ public class PaxxoCrawlingServiceTest {
         {
             when(paxxoApiClient.getMakerIndices()).thenReturn(makerIndices);
             when(makerIndices.getMakers()).thenReturn(Arrays.asList(mockMakers));
-            doNothing().when(paxxoRepository).save(anyCollectionOf(Maker.class));
+            doNothing().when(paxxoRepository).saveMakerIndices(anyCollectionOf(Maker.class));
         }
         WHEN:
         {

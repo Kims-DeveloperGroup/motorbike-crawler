@@ -37,7 +37,7 @@ public class PaxxoCrawlingService {
      */
     public void updatePaxxoMakerIndices() {
         List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
-        paxxoRepository.save(makerIndices);
+        paxxoRepository.saveMakerIndices(makerIndices);
     }
 
     /**
