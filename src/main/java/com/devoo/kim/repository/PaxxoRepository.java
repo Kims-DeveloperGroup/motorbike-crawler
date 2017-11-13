@@ -25,7 +25,7 @@ public class PaxxoRepository {
     }
 
     public void saveMakerIndices(Collection<Maker> makers) {
-        makerIndexRepository.save(makers);
+        makerIndexRepository.saveAll(makers);
     }
 
     public void saveItems(Collection<PaxxoItem> items) {
