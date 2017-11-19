@@ -40,10 +40,10 @@ public class PaxxoRepositoryTest {
 
         //when
         paxxoRepository.saveMakerIndices(makerIndices);
-        List<Maker> indicesFrom = Lists.newArrayList(makerIndexRepository.findAll());
+        List<Maker> makerIndicesFromRepository = Lists.newArrayList(makerIndexRepository.findAll());
 
         //then
-        Assertions.assertThat(indicesFrom).size();
+        Assertions.assertThat(makerIndicesFromRepository).size();
     }
 
     @After
