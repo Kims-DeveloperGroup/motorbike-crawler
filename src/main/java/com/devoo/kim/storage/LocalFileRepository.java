@@ -4,7 +4,6 @@ import com.devoo.kim.domain.FetchedResultWrapper;
 import com.devoo.kim.storage.exception.FailToSaveFetchedResultException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import crawlercommons.fetcher.FetchedResult;
-import org.apache.directory.api.util.Strings;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -29,7 +28,7 @@ public class LocalFileRepository implements FetchedResultRepository {
             String json = objectMapper.writeValueAsString(serialize(fetchedResults));
             Files.createDirectories(REPOSITORY_PATH);
             Path filePath = Files.createFile(Paths.get(FILE_PREFIX +System.currentTimeMillis()));
-            Files.write(filePath, Strings.getBytesUtf8(json));
+//            Files.write(filePath, Strings.getBytesUtf8(json));
         } catch (IOException e) {
             throw new FailToSaveFetchedResultException();
         }
