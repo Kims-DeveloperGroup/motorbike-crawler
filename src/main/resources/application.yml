@@ -9,6 +9,7 @@ external:
   paxxo:
     pagination:
       size: 50
+      limit: 100 #limited page count to be collected.
     country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=
     mode-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=model&idx={0} # idx =maker id
     item-search-api: http://bike.passo.co.kr/bike/index.php
@@ -26,6 +27,11 @@ elasticsearch:
 ---
 spring:
   profiles: test
+
+external:
+  paxxo:
+    pagination:
+      limit: 2
 
 elasticsearch:
   host: 127.0.0.1

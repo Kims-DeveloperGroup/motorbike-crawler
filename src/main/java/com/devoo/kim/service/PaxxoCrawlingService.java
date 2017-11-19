@@ -25,7 +25,9 @@ public class PaxxoCrawlingService {
     @Value("${external.paxxo.item-url-pattern}")
     private String itemUrlPattern = "";
 
+    @Value("${external.paxxo.pagination.limit}")
     private int pageLimit = 3;
+
     public PaxxoCrawlingService(@Autowired PaxxoApiClient paxxoApiClient,
                                 @Autowired PaxxoRepository indicesRepository) {
         this.paxxoApiClient = paxxoApiClient;
