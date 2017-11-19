@@ -4,9 +4,9 @@ import com.devoo.kim.config.ElasticSearchConfig;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.repository.paxxo.PaxxoItemRepository;
 import com.devoo.kim.repository.paxxo.PaxxoMakerIndexRepository;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -32,20 +34,22 @@ public class PaxxoRepositoryTest {
     @Test
     public void shouldBeMakerIndicesSaved_whenMakerIndicesAreGiven() {
         //given
-        Collection<Maker> makerIndices = new ArrayList<>();
+        Collection<Maker> makerIndicesToSave = new ArrayList<>();
         Maker maker1 = new Maker(1, "makerName1");
         Maker maker2 = new Maker(2, "makerName2");
-        makerIndices.add(maker1);
-        makerIndices.add(maker2);
+        makerIndicesToSave.add(maker1);
+        makerIndicesToSave.add(maker2);
 
         //when
-        paxxoRepository.saveMakerIndices(makerIndices);
+        paxxoRepository.saveMakerIndices(makerIndicesToSave);
         List<Maker> makerIndicesFromRepository = Lists.newArrayList(makerIndexRepository.findAll());
 
         //then
-        Assertions.assertThat(makerIndicesFromRepository).size();
+        assertThat(makerIndicesFromRepository).hasSameSizeAs(makerIndicesToSave);
+        assertThat(makerIndicesFromRepository.get(0).getName()).isNotEmpty();
     }
 
+    @Before
     @After
     public void deleteAllTestData() {
         makerIndexRepository.deleteAll();
