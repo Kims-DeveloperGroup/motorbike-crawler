@@ -10,8 +10,9 @@ external:
     pagination:
       size: 50
     country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=
+    mode-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=model&idx={0} # idx =maker id
     item-search-api: http://bike.passo.co.kr/bike/index.php
-    item-url-pattern: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=home#HIS_ID:search_mode=country&order_by=&num=0&idx={0}
+    item-url-pattern: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=home#HIS_ID:search_mode=country&order_by=&num=0&idx={0} #idx =item idx
 
 ---
 spring:
