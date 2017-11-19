@@ -1,7 +1,7 @@
 package com.devoo.kim.domain.paxxo;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by rikim on 2017. 8. 14..
  */
-@Data
 @Document(indexName = "maker")
+@Getter
 @XmlRootElement
 @AllArgsConstructor
 @NoArgsConstructor
