@@ -4,6 +4,8 @@ import com.devoo.kim.config.ElasticSearchConfig;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.repository.paxxo.PaxxoItemRepository;
 import com.devoo.kim.repository.paxxo.PaxxoMakerIndexRepository;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Lists;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -37,18 +40,14 @@ public class PaxxoRepositoryTest {
 
         //when
         paxxoRepository.saveMakerIndices(makerIndices);
+        List<Maker> indicesFrom = Lists.newArrayList(makerIndexRepository.findAll());
 
-//        //then
-//        Iterator<Collection<Maker>> indicesFrom = makerIndexRepository.findAll().iterator();
-//        Collection<Maker> makers = new ArrayList<>();
-//        while (indicesFrom.hasNext()) {
-//            makers = indicesFrom.next();
-//        }
-//        Assertions.assertThat(makers).size();
+        //then
+        Assertions.assertThat(indicesFrom).size();
     }
 
     @After
     public void deleteAllTestData() {
-//        makerIndexRepository.deleteAll();
+        makerIndexRepository.deleteAll();
     }
 }
