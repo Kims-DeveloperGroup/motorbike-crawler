@@ -2,6 +2,7 @@ package com.devoo.kim.crawl;
 
 import com.devoo.kim.storage.FetchedResultRepository;
 import com.devoo.kim.util.FetcherUrls;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class FetcherRunnerTest {
     @Autowired
     FetchedResultRepository fetchedResultRepository;
 
+    @Ignore
     @Test
     public void shouldFetchFromUrlsOfFetchUrlFile() throws Exception {
         List<String> fetchingUrl;
