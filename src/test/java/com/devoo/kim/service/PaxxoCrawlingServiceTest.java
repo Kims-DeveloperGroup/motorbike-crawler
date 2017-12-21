@@ -4,7 +4,7 @@ import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
-import com.devoo.kim.repository.PaxxoRepository;
+import com.devoo.kim.repository.PaxxoIndicesRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +33,7 @@ public class PaxxoCrawlingServiceTest {
     private PaxxoApiClient paxxoApiClient;
 
     @Mock
-    private PaxxoRepository paxxoRepository;
+    private PaxxoIndicesRepository paxxoIndicesRepository;
 
     @Mock
     private PaxxoMakerIndices makerIndices;
@@ -46,7 +46,7 @@ public class PaxxoCrawlingServiceTest {
         {
             when(paxxoApiClient.getMakerIndices()).thenReturn(makerIndices);
             when(makerIndices.getMakers()).thenReturn(Arrays.asList(mockMakers));
-            doNothing().when(paxxoRepository).saveMakerIndices(anyCollectionOf(Maker.class));
+            doNothing().when(paxxoIndicesRepository).save(anyCollectionOf(Maker.class));
         }
         WHEN:
         {
@@ -66,7 +66,7 @@ public class PaxxoCrawlingServiceTest {
         {
             items.add(new PaxxoItem());
             when(paxxoApiClient.getItems(3)).thenReturn(items);
-            doNothing().when(paxxoRepository).saveItems(any());
+            doNothing().when(paxxoIndicesRepository).saveItems(any());
         }
 
         int updated = 0;
@@ -78,7 +78,7 @@ public class PaxxoCrawlingServiceTest {
         THEN:
         {
             Assertions.assertThat(updated).isEqualTo(items.size());
-            verify(paxxoRepository).saveItems(any());
+            verify(paxxoIndicesRepository).saveItems(any());
         }
     }
 }
