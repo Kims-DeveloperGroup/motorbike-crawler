@@ -2,6 +2,7 @@ package com.devoo.kim.repository;
 
 import com.devoo.kim.config.ElasticSearchConfig;
 import com.devoo.kim.domain.paxxo.Maker;
+import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.repository.paxxo.PaxxoItemRepository;
 import com.devoo.kim.repository.paxxo.PaxxoMakerIndexRepository;
 import org.assertj.core.util.Lists;
@@ -28,7 +29,10 @@ public class PaxxoRepositoryTest {
     private PaxxoRepository paxxoRepository;
 
     @Autowired
-    PaxxoMakerIndexRepository makerIndexRepository;
+    private PaxxoMakerIndexRepository makerIndexRepository;
+
+    @Autowired
+    private PaxxoItemRepository itemRepository;
 
     @Test
     public void shouldBeMakerIndicesSaved_whenMakerIndicesAreGiven() {
@@ -47,6 +51,23 @@ public class PaxxoRepositoryTest {
         assertThat(makerIndicesFromRepository).hasSameSizeAs(makerIndicesToSave);
         assertThat(makerIndicesFromRepository.get(0).getName()).isNotEmpty();
     }
+
+    @Test
+    public void shouldBeItemSaved_whenPaxxoItemsAreGiven() {
+        //given
+        Collection<PaxxoItem> expectedItemsToBeSave = new ArrayList<>();
+        PaxxoItem item1 = new PaxxoItem();
+
+        expectedItemsToBeSave.add(item1);
+
+        //when
+        paxxoRepository.saveItems(expectedItemsToBeSave);
+        List<PaxxoItem> actualItemsFromRepository = Lists.newArrayList(itemRepository.findAll());
+
+        //then
+        assertThat(actualItemsFromRepository).hasSameSizeAs(expectedItemsToBeSave);
+    }
+
 
     @Before
     public void deleteAllTestData() {
