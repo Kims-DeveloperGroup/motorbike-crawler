@@ -1,7 +1,7 @@
 package com.devoo.kim.domain.naver;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 @Data
 public class CafeItem {

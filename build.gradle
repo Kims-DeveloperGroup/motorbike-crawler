@@ -10,10 +10,8 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE")
-    compile group: 'com.google.code.crawler-commons', name: 'crawler-commons', version: '0.5'
-    compile 'org.springframework.data:spring-data-hadoop:2.5.0.RELEASE'
-    compile 'org.jsoup:jsoup:1.10.3'
+    compile("org.springframework.boot:spring-boot-starter-web:1.4.7.RELEASE")
+    compile 'org.springframework.data:spring-data-elasticsearch:2.1.9.RELEASE'
     compileOnly "org.projectlombok:lombok:1.16.16"
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.11'
