@@ -5,7 +5,6 @@ import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.repository.paxxo.PaxxoItemRepository;
 import com.devoo.kim.repository.paxxo.PaxxoMakerIndexRepository;
 import org.assertj.core.util.Lists;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +49,6 @@ public class PaxxoRepositoryTest {
     }
 
     @Before
-    @After
     public void deleteAllTestData() {
         makerIndexRepository.deleteAll();
     }
