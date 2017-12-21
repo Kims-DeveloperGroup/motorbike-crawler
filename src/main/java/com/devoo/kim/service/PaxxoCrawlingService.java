@@ -3,7 +3,7 @@ package com.devoo.kim.service;
 import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
-import com.devoo.kim.repository.PaxxoRepository;
+import com.devoo.kim.repository.PaxxoIndicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,19 +19,17 @@ import java.util.List;
 @Service
 public class PaxxoCrawlingService {
     private PaxxoApiClient paxxoApiClient;
-    private PaxxoRepository paxxoRepository;
+    private PaxxoIndicesRepository paxxoIndicesRepository;
     private MessageFormat itemUrlLinkFormatter;
 
     @Value("${external.paxxo.item-url-pattern}")
     private String itemUrlPattern = "";
 
-    @Value("${external.paxxo.pagination.limit}")
     private int pageLimit = 3;
-
     public PaxxoCrawlingService(@Autowired PaxxoApiClient paxxoApiClient,
-                                @Autowired PaxxoRepository indicesRepository) {
+                                @Autowired PaxxoIndicesRepository indicesRepository) {
         this.paxxoApiClient = paxxoApiClient;
-        this.paxxoRepository = indicesRepository;
+        this.paxxoIndicesRepository = indicesRepository;
     }
 
     /**
@@ -39,7 +37,7 @@ public class PaxxoCrawlingService {
      */
     public void updatePaxxoMakerIndices() {
         List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
-        paxxoRepository.saveMakerIndices(makerIndices);
+        paxxoIndicesRepository.save(makerIndices);
     }
 
     /**
@@ -54,7 +52,7 @@ public class PaxxoCrawlingService {
             for (PaxxoItem item : items) {
                 item.generateUrl(itemUrlLinkFormatter);
             }
-            paxxoRepository.saveItems(items);
+            paxxoIndicesRepository.saveItems(items);
         } catch (JAXBException e) {
             return 0;
         }
