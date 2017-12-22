@@ -27,8 +27,7 @@ public class PaxxoCrawlingService {
     @Value("${external.paxxo.item-url-pattern}")
     private String itemUrlPattern = "";
 
-    @Value("${external.paxxo.pagination.limit}")
-    private int pageLimit = 3;
+    public static final int MAX_PAGE_LIMIT = 0;
 
     public PaxxoCrawlingService(@Autowired PaxxoApiClient paxxoApiClient,
                                 @Autowired PaxxoRepository indicesRepository) {
@@ -48,11 +47,11 @@ public class PaxxoCrawlingService {
      * Crawls items as much as the limited number of pages, and updates in the repository
      * @return the number of items newly updated items with its link.
      */
-    public int updateItems() {
+    public int updateItems(int pageLimit) {
         List<PaxxoItem> items;
         try {
             log.debug("Page Limit: {}", pageLimit);
-            items = paxxoApiClient.getItems(pageLimit);
+            items = paxxoApiClient.getItems(MAX_PAGE_LIMIT);
             log.info("{} items were collected form Paxxo", items.size());
             this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
             for (PaxxoItem item : items) {
