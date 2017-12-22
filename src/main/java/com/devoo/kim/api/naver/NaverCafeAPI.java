@@ -50,12 +50,12 @@ public class NaverCafeAPI {
      * Search items in Naver cafe
      * @param query
      * @param pageLimit  the limit number of pages to be retrieved. (100 items in a page)
-     * @param startPageNumber the start page number of items to get
+     * @param startPageNumber the start page number of items to get (beginning with 0)
      * @return
      */
     public List<CafeItem> search(String query, int pageLimit, int startPageNumber) {
         List<CafeItem> items = new ArrayList<>();
-        NaverSearchMetadata metadata = getSerachMetadata(query);
+        NaverSearchMetadata metadata = getSearchMetadata(query);
         long lastPage = metadata.getLastPageNumber(pageLimit);
         for (int page = startPageNumber; page <= lastPage; page++) {
             items.addAll(getItemsInPage(query, page));
@@ -66,7 +66,7 @@ public class NaverCafeAPI {
     /**
      * Get CafeItems in a given pageNumber
      * @param query
-     * @param pageNumber
+     * @param pageNumber >= 0
      * @return
      */
     private List<CafeItem> getItemsInPage(String query, int pageNumber) {
@@ -79,7 +79,7 @@ public class NaverCafeAPI {
      * @param query search input
      * @return search metadata of naver cafe
      */
-    private NaverSearchMetadata getSerachMetadata(String query) {
+    private NaverSearchMetadata getSearchMetadata(String query) {
         return doRequest(query).getBody();
     }
 

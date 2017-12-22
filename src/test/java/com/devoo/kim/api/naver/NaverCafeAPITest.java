@@ -35,7 +35,7 @@ public class NaverCafeAPITest {
         List<CafeItem> items;
         WHEN:
         {
-            items = naverCafeAPI.search("naver", 1);
+            items = naverCafeAPI.search("naver", 1, 0);
         }
 
         int expectedItems = this.pageSize;
