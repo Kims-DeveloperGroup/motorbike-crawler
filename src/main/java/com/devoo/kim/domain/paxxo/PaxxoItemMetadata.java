@@ -1,6 +1,7 @@
 package com.devoo.kim.domain.paxxo;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by rikim on 2017. 7. 30..
  */
+@Slf4j
 @XmlRootElement(name = "passo", namespace = "")
 public class PaxxoItemMetadata {
     @Getter
@@ -15,7 +17,7 @@ public class PaxxoItemMetadata {
     private int count;
 
     @XmlElement(name = "page")
-    private PaxxoPage page;
+    private PaxxoPagination page;
 
     /**
      * Gets the last page number of search result. (size of page equals to item counts.)
@@ -26,7 +28,7 @@ public class PaxxoItemMetadata {
      * @return last page number of items from search result.
      */
     public int getLastPageNumber(int pageLimit) {
-        int lastPageNumber = page.getLastPage();
+        log.debug("Maximum page count from Paxxo: {}", page.getLastPage());
         if (page.getLastPage() < pageLimit - 1 || pageLimit == 0) {
             return page.getLastPage();
         }

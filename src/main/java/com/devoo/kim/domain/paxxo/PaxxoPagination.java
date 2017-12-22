@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Getter
 @XmlRootElement
-public class PaxxoPage {
+public class PaxxoPagination {
     @XmlElement(name = "next")
     private int currentPage;
 
