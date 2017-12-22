@@ -4,6 +4,7 @@ import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoItems;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import java.util.List;
  * Created by rikim on 2017. 7. 30..
  */
 @Service
+@Slf4j
 public class PaxxoApiClient {
 
     @Value("${external.paxxo.item-search-api}")
@@ -62,6 +64,7 @@ public class PaxxoApiClient {
     public PaxxoItemMetadata getItemMetadata(String maker, String model) throws JAXBException {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, 0);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
+        log.debug("Getting metadata from Paxxo.");
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItemMetadata.class);
     }
 
@@ -77,6 +80,7 @@ public class PaxxoApiClient {
     private List<PaxxoItem> getItemsInPage(String maker, String model, int page) {
         MultiValueMap<String, String> searchForm = makeSearchForm(maker, model, page);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(searchForm, headers());
+        log.debug("collecting items in page {}", page);
         return restTemplate.postForObject(itemSearchApi, requestEntity, PaxxoItems.class).getItems();
     }
 

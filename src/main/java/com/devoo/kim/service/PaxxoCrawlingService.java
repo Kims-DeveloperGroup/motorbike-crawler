@@ -4,6 +4,7 @@ import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.repository.PaxxoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
  * Crawls items in paxxo.
  */
 @Service
+@Slf4j
 public class PaxxoCrawlingService {
     private PaxxoApiClient paxxoApiClient;
     private PaxxoRepository paxxoRepository;
@@ -25,8 +27,7 @@ public class PaxxoCrawlingService {
     @Value("${external.paxxo.item-url-pattern}")
     private String itemUrlPattern = "";
 
-    @Value("${external.paxxo.pagination.limit}")
-    private int pageLimit = 3;
+    public static final int MAX_PAGE_LIMIT = 0;
 
     public PaxxoCrawlingService(@Autowired PaxxoApiClient paxxoApiClient,
                                 @Autowired PaxxoRepository indicesRepository) {
@@ -38,18 +39,22 @@ public class PaxxoCrawlingService {
      * Crawls maker indices of paxxo
      */
     public void updatePaxxoMakerIndices() {
+        log.info("Updating paxxo maker indices...");
         List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
         paxxoRepository.saveMakerIndices(makerIndices);
+        log.info("Paxxo maker indices are updated");
     }
 
     /**
      * Crawls items as much as the limited number of pages, and updates in the repository
      * @return the number of items newly updated items with its link.
      */
-    public int updateItems() {
+    public int updateItems(int pageLimit) {
         List<PaxxoItem> items;
         try {
+            log.debug("Page Limit: {}", pageLimit);
             items = paxxoApiClient.getItems(pageLimit);
+            log.info("{} items were collected form Paxxo", items.size());
             this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
             for (PaxxoItem item : items) {
                 item.generateUrl(itemUrlLinkFormatter);

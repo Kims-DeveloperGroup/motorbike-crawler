@@ -11,6 +11,7 @@ import java.text.MessageFormat;
 /**
  * Created by rikim on 2017. 8. 12..
  */
+@Getter
 @Document(indexName = "paxxo-item")
 @XmlRootElement(name = "item")
 public class PaxxoItem {

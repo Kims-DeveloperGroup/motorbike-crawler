@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by rikim on 2017. 8. 14..
  */
-@Document(indexName = "maker")
+@Document(indexName = "paxxo-maker")
 @Getter
 @XmlRootElement
 @AllArgsConstructor
