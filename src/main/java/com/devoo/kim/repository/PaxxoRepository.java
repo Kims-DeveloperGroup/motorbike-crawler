@@ -4,6 +4,7 @@ import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.repository.paxxo.PaxxoItemRepository;
 import com.devoo.kim.repository.paxxo.PaxxoMakerIndexRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,7 @@ import java.util.Collection;
  * Created by rikim on 2017. 8. 22..
  */
 @Repository
+@Slf4j
 public class PaxxoRepository {
     private final PaxxoItemRepository itemRepository;
     private final PaxxoMakerIndexRepository makerIndexRepository;
@@ -30,5 +32,6 @@ public class PaxxoRepository {
 
     public void saveItems(Collection<PaxxoItem> items) {
         itemRepository.save(items);
+        log.info("{} items are saved in repository", items.size());
     }
 }

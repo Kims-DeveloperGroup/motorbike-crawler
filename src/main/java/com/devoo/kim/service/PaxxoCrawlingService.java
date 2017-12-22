@@ -4,6 +4,7 @@ import com.devoo.kim.api.passo.PaxxoApiClient;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.repository.PaxxoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
  * Crawls items in paxxo.
  */
 @Service
+@Slf4j
 public class PaxxoCrawlingService {
     private PaxxoApiClient paxxoApiClient;
     private PaxxoRepository paxxoRepository;
@@ -49,7 +51,9 @@ public class PaxxoCrawlingService {
     public int updateItems() {
         List<PaxxoItem> items;
         try {
+            log.debug("Page Limit: {}", pageLimit);
             items = paxxoApiClient.getItems(pageLimit);
+            log.info("{} items were collected form Paxxo", items.size());
             this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
             for (PaxxoItem item : items) {
                 item.generateUrl(itemUrlLinkFormatter);
