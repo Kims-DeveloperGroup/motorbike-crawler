@@ -39,8 +39,10 @@ public class PaxxoCrawlingService {
      * Crawls maker indices of paxxo
      */
     public void updatePaxxoMakerIndices() {
+        log.info("Updating paxxo maker indices...");
         List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
         paxxoRepository.saveMakerIndices(makerIndices);
+        log.info("Paxxo maker indices are updated");
     }
 
     /**
@@ -51,7 +53,7 @@ public class PaxxoCrawlingService {
         List<PaxxoItem> items;
         try {
             log.debug("Page Limit: {}", pageLimit);
-            items = paxxoApiClient.getItems(MAX_PAGE_LIMIT);
+            items = paxxoApiClient.getItems(pageLimit);
             log.info("{} items were collected form Paxxo", items.size());
             this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
             for (PaxxoItem item : items) {

@@ -19,6 +19,7 @@ public class CrawlerApplicationController {
 
     @PutMapping("/paxxo/sale-items")
     public void updatePaxxoSalesItem(@RequestParam(required = false) Integer pageLimit) {
+        paxxoCrawlingService.updatePaxxoMakerIndices();
         log.info("Crawling items from Paxxo...");
         Instant startTime = Instant.now();
         if (pageLimit == null) {
