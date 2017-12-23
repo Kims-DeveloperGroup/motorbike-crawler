@@ -36,7 +36,7 @@ public class NaverCrawlingServiceTest {
         //WHEN
         naverCrawlingService.updateSaleItems(pageLimit);
         //THEN
-        verify(naverCafeAPI, times(pageLimit)).search(anyString(), eq(pageLimit), anyInt());
+        verify(naverCafeAPI, times(1)).search(anyString(), eq(pageLimit), anyInt());
         verify(naverItemRepository, times(1)).save(anyCollection());
     }
 }

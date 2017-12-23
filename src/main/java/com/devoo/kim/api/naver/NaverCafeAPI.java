@@ -74,7 +74,8 @@ public class NaverCafeAPI {
      */
     private List<NaverItem> getItemsInPage(String query, int pageNumber) {
         log.debug("Crawling items in page {}", pageNumber);
-        NaverItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, pageSize * pageNumber + 1)
+        int startItemNumber = pageNumber == 0 ? 1 : pageSize * pageNumber;
+        NaverItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, startItemNumber)
                 .getBody().getNaverItems();
         return Arrays.asList(items);
     }

@@ -2,6 +2,7 @@ package com.devoo.kim.repository.naver;
 
 import com.devoo.kim.domain.naver.NaverItem;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class NaverItemRepositoryTest {
     @Autowired
     private NaverItemRepository naverItemRepository;
+
+    @Before
+    public void cleanUpTestData() {
+        naverItemRepository.deleteAll();
+    }
 
     @Test
     public void shouldBeItemSaved_whenPaxxoItemsAreGiven() {
