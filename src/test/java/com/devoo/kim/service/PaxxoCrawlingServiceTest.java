@@ -62,17 +62,18 @@ public class PaxxoCrawlingServiceTest {
     @Test
     public void shouldSaveAndUpdateItems() throws JAXBException {
         List<PaxxoItem> items = new ArrayList<>();
+        int pageLimit = 3;
         GIVEN:
         {
             items.add(new PaxxoItem());
-            when(paxxoApiClient.getItems(3)).thenReturn(items);
+            when(paxxoApiClient.getItems(pageLimit)).thenReturn(items);
             doNothing().when(paxxoRepository).saveItems(any());
         }
 
         int updated = 0;
         WHEN:
         {
-            updated = paxxoCrawlingService.updateItems();
+            updated = paxxoCrawlingService.updateItems(pageLimit);
         }
 
         THEN:

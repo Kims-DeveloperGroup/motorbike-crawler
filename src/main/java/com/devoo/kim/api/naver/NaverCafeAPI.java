@@ -1,9 +1,9 @@
 package com.devoo.kim.api.naver;
 
-import com.devoo.kim.domain.naver.CafeItem;
+import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.domain.naver.NaverSearchItems;
 import com.devoo.kim.domain.naver.NaverSearchMetadata;
-import org.springframework.beans.factory.InitializingBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -24,6 +24,7 @@ import java.util.List;
  * Created by rikim on 2017. 7. 16..
  */
 @Service
+@Slf4j
 public class NaverCafeAPI {
     private static final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
     private static final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
@@ -51,26 +52,31 @@ public class NaverCafeAPI {
      * Search items in Naver cafe
      * @param query
      * @param pageLimit  the limit number of pages to be retrieved. (100 items in a page)
+     * @param startPageNumber the start page number of items to get (beginning with 0)
      * @return
      */
-    public List<CafeItem> search(String query, int pageLimit) {
-        List<CafeItem> items = new ArrayList<>();
-        NaverSearchMetadata metadata = getSerachMetadata(query);
+    public List<NaverItem> search(String query, int pageLimit, int startPageNumber) {
+        List<NaverItem> items = new ArrayList<>();
+        NaverSearchMetadata metadata = getSearchMetadata(query);
         long lastPage = metadata.getLastPageNumber(pageLimit);
-        for (int page = 0; page <= lastPage; page++) {
-            items.addAll(getItemsInPage(query, page));
+        for (int currentPage = startPageNumber; currentPage <= lastPage; currentPage++) {
+            List<NaverItem> itemsInPage = getItemsInPage(query, currentPage);
+            items.addAll(itemsInPage);
         }
         return items;
     }
 
     /**
-     * Get CafeItems in a given page
+     * Get CafeItems in a given pageNumber
      * @param query
-     * @param page
+     * @param pageNumber >= 0
      * @return
      */
-    private List<CafeItem> getItemsInPage(String query, int page) {
-        CafeItem[] items = doRequest(query, SIMILARITY_ORDER, 100, 100*page + 1).getBody().getCafeItems();
+    private List<NaverItem> getItemsInPage(String query, int pageNumber) {
+        log.debug("Crawling items in page {}", pageNumber);
+        int startItemNumber = pageNumber == 0 ? 1 : pageSize * pageNumber;
+        NaverItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, startItemNumber)
+                .getBody().getNaverItems();
         return Arrays.asList(items);
     }
 
@@ -79,8 +85,10 @@ public class NaverCafeAPI {
      * @param query search input
      * @return search metadata of naver cafe
      */
-    private NaverSearchMetadata getSerachMetadata(String query) {
-        return doRequest(query).getBody();
+    private NaverSearchMetadata getSearchMetadata(String query) {
+        NaverSearchMetadata metadata = doRequest(query).getBody();
+        log.debug("Total items: {} for {}", metadata.getTotalItems(), query);
+        return metadata;
     }
 
     /**
@@ -88,15 +96,15 @@ public class NaverCafeAPI {
      * @param query query input to search
      * @param sort sorting method, order
      * @param countOfResult limit count of items from search result (default =10, max = 100)
-     * @param start start index of items from result (default = 1, max = 1000).
+     * @param startItemNumber startItemNumber start index of items in search result (default = 1, max = 1000).
      * @return
      */
-    private ResponseEntity<NaverSearchItems> doRequest(String query, String sort, int countOfResult, int start) {
+    private ResponseEntity<NaverSearchItems> doRequest(String query, String sort, int countOfResult, int startItemNumber) {
         URI url = UriComponentsBuilder.fromHttpUrl(cafeApiUrl)
                 .queryParam("query", query)
                 .queryParam("sort", sort)
                 .queryParam("display", countOfResult)
-                .queryParam("start", start).build().toUri();
+                .queryParam("start", startItemNumber).build().toUri();
         return restTemplate.exchange(url, HttpMethod.GET, header(), NaverSearchItems.class);
     }
 
