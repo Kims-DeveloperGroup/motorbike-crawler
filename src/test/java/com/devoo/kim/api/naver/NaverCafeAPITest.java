@@ -1,6 +1,6 @@
 package com.devoo.kim.api.naver;
 
-import com.devoo.kim.domain.naver.CafeItem;
+import com.devoo.kim.domain.naver.NaverItem;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,17 +28,19 @@ public class NaverCafeAPITest {
     @Test
     public void shouldItemsBeRetrievedAsMuchAsSizeOfPage() {
         String query;
+        int pageLimit;
         GIVEN:
         {
+            pageLimit = 2;
             query = "naver";
         }
-        List<CafeItem> items;
+        List<NaverItem> items;
         WHEN:
         {
-            items = naverCafeAPI.search("naver", 1, 0);
+            items = naverCafeAPI.search(query, pageLimit, 0);
         }
 
-        int expectedItems = this.pageSize;
+        int expectedItems = this.pageSize * pageLimit;
         THEN:
         {
             Assertions.assertThat(items).size().isEqualTo(expectedItems);

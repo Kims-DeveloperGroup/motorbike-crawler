@@ -16,7 +16,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com.devoo.kim.repository.paxxo")
+@EnableElasticsearchRepositories(basePackages = {"com.devoo.kim.repository.paxxo", "com.devoo.kim.repository.naver"})
 public class ElasticSearchConfig {
 
     @Value("${elasticsearch.host}")

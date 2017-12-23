@@ -1,8 +1,9 @@
 package com.devoo.kim.api.naver;
 
-import com.devoo.kim.domain.naver.CafeItem;
+import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.domain.naver.NaverSearchItems;
 import com.devoo.kim.domain.naver.NaverSearchMetadata;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,7 @@ import java.util.List;
  * Created by rikim on 2017. 7. 16..
  */
 @Service
+@Slf4j
 public class NaverCafeAPI {
     private static final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
     private static final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
@@ -53,12 +55,13 @@ public class NaverCafeAPI {
      * @param startPageNumber the start page number of items to get (beginning with 0)
      * @return
      */
-    public List<CafeItem> search(String query, int pageLimit, int startPageNumber) {
-        List<CafeItem> items = new ArrayList<>();
+    public List<NaverItem> search(String query, int pageLimit, int startPageNumber) {
+        List<NaverItem> items = new ArrayList<>();
         NaverSearchMetadata metadata = getSearchMetadata(query);
         long lastPage = metadata.getLastPageNumber(pageLimit);
-        for (int page = startPageNumber; page <= lastPage; page++) {
-            items.addAll(getItemsInPage(query, page));
+        for (int currentPage = startPageNumber; currentPage <= lastPage; currentPage++) {
+            List<NaverItem> itemsInPage = getItemsInPage(query, currentPage);
+            items.addAll(itemsInPage);
         }
         return items;
     }
@@ -69,8 +72,10 @@ public class NaverCafeAPI {
      * @param pageNumber >= 0
      * @return
      */
-    private List<CafeItem> getItemsInPage(String query, int pageNumber) {
-        CafeItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, pageSize * pageNumber + 1).getBody().getCafeItems();
+    private List<NaverItem> getItemsInPage(String query, int pageNumber) {
+        log.debug("Crawling items in page {}", pageNumber);
+        NaverItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, pageSize * pageNumber + 1)
+                .getBody().getNaverItems();
         return Arrays.asList(items);
     }
 
@@ -80,7 +85,9 @@ public class NaverCafeAPI {
      * @return search metadata of naver cafe
      */
     private NaverSearchMetadata getSearchMetadata(String query) {
-        return doRequest(query).getBody();
+        NaverSearchMetadata metadata = doRequest(query).getBody();
+        log.debug("Total items: {} for {}", metadata.getTotalItems(), query);
+        return metadata;
     }
 
     /**
@@ -96,7 +103,7 @@ public class NaverCafeAPI {
                 .queryParam("query", query)
                 .queryParam("sort", sort)
                 .queryParam("display", countOfResult)
-                .queryParam("startItemNumber", startItemNumber).build().toUri();
+                .queryParam("start", startItemNumber).build().toUri();
         return restTemplate.exchange(url, HttpMethod.GET, header(), NaverSearchItems.class);
     }
 
