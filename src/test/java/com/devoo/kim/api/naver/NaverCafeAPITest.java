@@ -1,5 +1,6 @@
 package com.devoo.kim.api.naver;
 
+import com.devoo.kim.api.exception.NaverApiRequestException;
 import com.devoo.kim.domain.naver.NaverItem;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -26,13 +27,13 @@ public class NaverCafeAPITest {
     private int pageSize;
 
     @Test
-    public void shouldItemsBeRetrievedAsMuchAsSizeOfPage() {
+    public void shouldItemsBeRetrievedAsMuchAsSizeOfPage() throws NaverApiRequestException {
         String query;
         int pageLimit;
         GIVEN:
         {
             pageLimit = 2;
-            query = "naver";
+            query = "네이버";
         }
         List<NaverItem> items;
         WHEN:

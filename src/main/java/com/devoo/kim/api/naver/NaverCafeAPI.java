@@ -1,5 +1,6 @@
 package com.devoo.kim.api.naver;
 
+import com.devoo.kim.api.exception.NaverApiRequestException;
 import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.domain.naver.NaverSearchItems;
 import com.devoo.kim.domain.naver.NaverSearchMetadata;
@@ -14,7 +15,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +58,7 @@ public class NaverCafeAPI {
      * @param startPageNumber the start page number of items to get (beginning with 0)
      * @return
      */
-    public List<NaverItem> search(String query, int pageLimit, int startPageNumber) {
+    public List<NaverItem> search(String query, int pageLimit, int startPageNumber) throws NaverApiRequestException {
         List<NaverItem> items = new ArrayList<>();
         NaverSearchMetadata metadata = getSearchMetadata(query);
         long lastPage = metadata.getLastPageNumber(pageLimit);
@@ -72,7 +75,7 @@ public class NaverCafeAPI {
      * @param pageNumber >= 0
      * @return
      */
-    private List<NaverItem> getItemsInPage(String query, int pageNumber) {
+    private List<NaverItem> getItemsInPage(String query, int pageNumber) throws NaverApiRequestException {
         log.debug("Crawling items in page {}", pageNumber);
         int startItemNumber = pageNumber == 0 ? 1 : pageSize * pageNumber;
         NaverItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, startItemNumber)
@@ -85,7 +88,7 @@ public class NaverCafeAPI {
      * @param query search input
      * @return search metadata of naver cafe
      */
-    private NaverSearchMetadata getSearchMetadata(String query) {
+    private NaverSearchMetadata getSearchMetadata(String query) throws NaverApiRequestException {
         NaverSearchMetadata metadata = doRequest(query).getBody();
         log.debug("Total items: {} for {}", metadata.getTotalItems(), query);
         return metadata;
@@ -99,16 +102,22 @@ public class NaverCafeAPI {
      * @param startItemNumber startItemNumber start index of items in search result (default = 1, max = 1000).
      * @return
      */
-    private ResponseEntity<NaverSearchItems> doRequest(String query, String sort, int countOfResult, int startItemNumber) {
+    private ResponseEntity<NaverSearchItems> doRequest(String query, String sort, int countOfResult, int startItemNumber) throws NaverApiRequestException {
+        String encodedQuery = null;
+        try {
+            encodedQuery = URLEncoder.encode(query, "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            throw new NaverApiRequestException();
+        }
         URI url = UriComponentsBuilder.fromHttpUrl(cafeApiUrl)
-                .queryParam("query", query)
+                .queryParam("query", encodedQuery)
                 .queryParam("sort", sort)
                 .queryParam("display", countOfResult)
                 .queryParam("start", startItemNumber).build().toUri();
         return restTemplate.exchange(url, HttpMethod.GET, header(), NaverSearchItems.class);
     }
 
-    private ResponseEntity<NaverSearchItems> doRequest(String query) {
+    private ResponseEntity<NaverSearchItems> doRequest(String query) throws NaverApiRequestException {
         return doRequest(query, SIMILARITY_ORDER, 1, 1);
     }
 

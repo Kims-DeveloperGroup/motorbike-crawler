@@ -2,6 +2,7 @@ package com.devoo.kim;
 
 import com.devoo.kim.service.NaverCrawlingService;
 import com.devoo.kim.service.PaxxoCrawlingService;
+import com.devoo.kim.service.exception.CrawlingFailureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,7 +38,7 @@ public class CrawlerApplicationController {
     }
 
     @PutMapping("/naver/sale-items")
-    public void updateNaverSalesItem(@RequestParam(required = false) Integer pageLimit) {
+    public void updateNaverSalesItem(@RequestParam(required = false) Integer pageLimit) throws CrawlingFailureException {
         log.info("Crawling items from Naver...");
         Instant startTime = Instant.now();
         if (pageLimit == null) {
