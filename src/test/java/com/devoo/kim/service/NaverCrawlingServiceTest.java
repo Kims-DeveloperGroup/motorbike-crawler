@@ -1,7 +1,9 @@
 package com.devoo.kim.service;
 
+import com.devoo.kim.api.exception.NaverApiRequestException;
 import com.devoo.kim.api.naver.NaverCafeAPI;
 import com.devoo.kim.repository.naver.NaverItemRepository;
+import com.devoo.kim.service.exception.CrawlingFailureException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,7 +30,7 @@ public class NaverCrawlingServiceTest {
     private NaverItemRepository naverItemRepository;
 
     @Test
-    public void shouldMotorBikeSaleItemsBeUpdated() {
+    public void shouldMotorBikeSaleItemsBeUpdated() throws NaverApiRequestException, CrawlingFailureException {
         //GIVEN
         int pageLimit = 3;
         when(naverCafeAPI.search(anyString(), eq(pageLimit), anyInt()))
