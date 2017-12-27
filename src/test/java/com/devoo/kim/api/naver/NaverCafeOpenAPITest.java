@@ -18,10 +18,10 @@ import java.util.List;
  */
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {NaverCafeAPI.class})
-public class NaverCafeAPITest {
+@SpringBootTest(classes = {NaverCafeOpenAPI.class})
+public class NaverCafeOpenAPITest {
     @Autowired
-    private NaverCafeAPI naverCafeAPI;
+    private NaverCafeOpenAPI naverCafeOpenAPI;
 
     @Value("${external.naver.pagination.size}")
     private int pageSize;
@@ -38,7 +38,7 @@ public class NaverCafeAPITest {
         List<NaverItem> items;
         WHEN:
         {
-            items = naverCafeAPI.search(query, pageLimit, 0);
+            items = naverCafeOpenAPI.search(query, pageLimit, 0);
         }
 
         int expectedItems = this.pageSize * pageLimit;
