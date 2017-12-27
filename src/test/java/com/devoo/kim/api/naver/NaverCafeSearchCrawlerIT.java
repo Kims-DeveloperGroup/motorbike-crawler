@@ -24,7 +24,7 @@ public class NaverCafeSearchCrawlerIT {
     @Test
     public void shouldReturnedDocumentContainListOfResultItems_whenGetRequestIsSentToSearchPage() {
         //given
-        String query = "네이버";
+        String query = "125cc팝니다";
         int pageNumber = 0;
 
         //when
@@ -39,12 +39,10 @@ public class NaverCafeSearchCrawlerIT {
     public void shouldBeItemsRetrievedAsManyAsPageSize_forGivenQuery() throws NaverApiRequestException {
 
         //when
-        Elements resultElements = naverCafeSearchCrawler.search("네이버", 1, 0)
+        Elements resultElements = naverCafeSearchCrawler.search("125cc팝니다", 1, 0)
                 .get(0);
 
         //then
         Assertions.assertThat(resultElements.size()).isEqualTo(NaverCafeSearchCrawler.PAGE_SIZE);
     }
-
-
 }
