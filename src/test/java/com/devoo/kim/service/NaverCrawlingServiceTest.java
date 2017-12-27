@@ -1,7 +1,7 @@
 package com.devoo.kim.service;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
-import com.devoo.kim.api.naver.NaverCafeOpenAPI;
+import com.devoo.kim.api.naver.NaverCafeAPI;
 import com.devoo.kim.repository.naver.NaverItemRepository;
 import com.devoo.kim.service.exception.CrawlingFailureException;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class NaverCrawlingServiceTest {
     private NaverCrawlingService naverCrawlingService;
 
     @Mock
-    private NaverCafeOpenAPI naverCafeOpenAPI;
+    private NaverCafeAPI naverCafeAPI;
 
     @Mock
     private NaverItemRepository naverItemRepository;
@@ -33,12 +33,12 @@ public class NaverCrawlingServiceTest {
     public void shouldMotorBikeSaleItemsBeUpdated() throws NaverApiRequestException, CrawlingFailureException {
         //GIVEN
         int pageLimit = 3;
-        when(naverCafeOpenAPI.search(anyString(), eq(pageLimit), anyInt()))
+        when(naverCafeAPI.search(anyString(), eq(pageLimit), anyInt()))
                 .thenReturn(new ArrayList<>());
         //WHEN
         naverCrawlingService.updateSaleItems(pageLimit);
         //THEN
-        verify(naverCafeOpenAPI, times(1)).search(anyString(), eq(pageLimit), anyInt());
+        verify(naverCafeAPI, times(1)).search(anyString(), eq(pageLimit), anyInt());
         verify(naverItemRepository, times(1)).save(anyCollection());
     }
 }

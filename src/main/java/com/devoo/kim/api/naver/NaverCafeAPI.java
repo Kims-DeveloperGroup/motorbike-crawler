@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class NaverCafeOpenAPI {
+public class NaverCafeAPI {
     private static final String CLIENT_ID_HEADER = "X-Naver-Client-Id";
     private static final String CLIENT_SECRET_HEADER = "X-Naver-Client-Secret";
     private RestTemplate restTemplate = new RestTemplate();
@@ -44,12 +44,11 @@ public class NaverCafeOpenAPI {
 
     private String SIMILARITY_ORDER = "sim";
     private String DATETIME_ORDER = "date";
-    private String sortOrder = SIMILARITY_ORDER;
 
     public static int pageSize;
 
-    public NaverCafeOpenAPI(@Value("${external.naver.pagination.size}") int pageSize) {
-        NaverCafeOpenAPI.pageSize = pageSize;
+    public NaverCafeAPI(@Value("${external.naver.pagination.size}") int pageSize) {
+        NaverCafeAPI.pageSize = pageSize;
     }
 
     /**
@@ -79,7 +78,7 @@ public class NaverCafeOpenAPI {
     private List<NaverItem> getItemsInPage(String query, int pageNumber) throws NaverApiRequestException {
         log.debug("Crawling items in page {}", pageNumber);
         int startItemNumber = pageNumber == 0 ? 1 : pageSize * pageNumber;
-        NaverItem[] items = doRequest(query, sortOrder, pageSize, startItemNumber)
+        NaverItem[] items = doRequest(query, SIMILARITY_ORDER, pageSize, startItemNumber)
                 .getBody().getNaverItems();
         return Arrays.asList(items);
     }
