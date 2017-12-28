@@ -44,7 +44,9 @@ public class NaverCafeSearchCrawler {
 
     public List<NaverItem> search(String query, int pageLimit, int startPageNumber) throws NaverApiRequestException {
         List<Document> resultDocuments = new LinkedList<>();
+        log.info("query: {} \n pageLimit: {} \n startPageNumber", query, pageLimit, startPageNumber);
         for (int currentPageNumber = startPageNumber; currentPageNumber < pageLimit; currentPageNumber++) {
+            log.debug("Crawling page {}", currentPageNumber);
             Document resultPageDocument = getDocuments(query, currentPageNumber);
             resultDocuments.add(resultPageDocument);
         }
