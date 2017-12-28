@@ -26,6 +26,7 @@ import java.util.List;
 /**
  * Created by rikim on 2017. 7. 16..
  */
+@Deprecated
 @Service
 @Slf4j
 public class NaverCafeAPI {
