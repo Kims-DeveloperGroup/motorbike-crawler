@@ -1,7 +1,9 @@
 package com.devoo.kim.parser;
 
+import com.devoo.kim.api.naver.NaverCafeSearchCrawler;
 import com.devoo.kim.domain.naver.NaverItem;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
@@ -13,15 +15,16 @@ import java.util.List;
 @Slf4j
 public class NaverSearchResultElementsParser {
 
-    public List<NaverItem> parse(List<Elements> resultElements) {
+    public List<NaverItem> parse(List<Document> documents) {
         List<NaverItem> parsedItems = new LinkedList<>();
-        for (Elements elements : resultElements) {
-            parsedItems.addAll(parse(elements));
+        for (Document document : documents) {
+            parsedItems.addAll(parse(document));
         }
         return parsedItems;
     }
 
-    public List<NaverItem> parse(Elements rawResultElements) {
+    public List<NaverItem> parse(Document document) {
+        Elements rawResultElements = extractResultItems(document);
         List<NaverItem> parsedItems = new LinkedList<>();
         rawResultElements.forEach(element -> {
             NaverItem item = new NaverItem();
@@ -50,5 +53,10 @@ public class NaverSearchResultElementsParser {
         Elements ddTags = dlTag.getElementsByTag("dd");
         Element descriptionElement = ddTags.get(1);
         return descriptionElement.text();
+    }
+
+    private Elements extractResultItems(Document resultPageDocument) {
+        return resultPageDocument.getElementById(NaverCafeSearchCrawler.ID_RESULT_ELEMENT)
+                .getElementsByTag("li");
     }
 }

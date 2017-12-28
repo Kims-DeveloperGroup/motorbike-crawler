@@ -1,11 +1,13 @@
 package com.devoo.kim.parser;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
-import com.devoo.kim.api.naver.NaverCafeSearchCrawler;
 import com.devoo.kim.domain.naver.NaverItem;
-import org.jsoup.select.Elements;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -13,23 +15,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class NaverSearchResultElementsParserTest {
-
-    private static NaverCafeSearchCrawler naverCafeSearchCrawler
-            = new NaverCafeSearchCrawler("https://section.cafe.naver.com/ArticleSearch.nhn");
-    private static Elements testResultElements;
+    private static final String TEST_URL
+            = "https://section.cafe.naver.com/ArticleSearch.nhn?query=125cc 팝니다";
+    private static Document testResultPageDocument;
 
     private NaverSearchResultElementsParser parser = new NaverSearchResultElementsParser();
 
     @BeforeClass
     public static void setUpTestData() throws NaverApiRequestException {
-        testResultElements = naverCafeSearchCrawler.search("125cc팝니다", 1, 0).get(0);
+        testResultPageDocument = getTestDocument("query");
     }
 
     @Test
     public void shouldBeGivenRawElementsParsedToNaverItem() {
 
         //when
-        List<NaverItem> parsedItems = parser.parse(testResultElements);
+        List<NaverItem> parsedItems = parser.parse(testResultPageDocument);
 
         //then
         NaverItem parsedItem = parsedItems.get(0);
@@ -38,5 +39,11 @@ public class NaverSearchResultElementsParserTest {
         assertThat(parsedItem.getCafeName()).isNotEmpty();
         assertThat(parsedItem.getDescription()).isNotEmpty();
         assertThat(parsedItem.getTitle()).isNotEmpty();
+    }
+
+    private static Document getTestDocument(String query) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(TEST_URL, String.class, query); // TODO: 2017. 12. 28. java.lang.IllegalArgumentException: Not enough variable values available to expand '"query"'
+        return Jsoup.parse(response.getBody());
     }
 }

@@ -1,6 +1,8 @@
 package com.devoo.kim.api.naver;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
+import com.devoo.kim.domain.naver.NaverItem;
+import com.devoo.kim.parser.NaverSearchResultElementsParser;
 import org.assertj.core.api.Assertions;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -11,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = NaverCafeSearchCrawler.class)
+@SpringBootTest(classes = {NaverCafeSearchCrawler.class, NaverSearchResultElementsParser.class})
 public class NaverCafeSearchCrawlerIT {
 
     @Autowired
@@ -39,10 +43,9 @@ public class NaverCafeSearchCrawlerIT {
     public void shouldBeItemsRetrievedAsManyAsPageSize_forGivenQuery() throws NaverApiRequestException {
 
         //when
-        Elements resultElements = naverCafeSearchCrawler.search("125cc팝니다", 1, 0)
-                .get(0);
+        List<NaverItem> resultItems = naverCafeSearchCrawler.search("125cc팝니다", 1, 0);
 
         //then
-        Assertions.assertThat(resultElements.size()).isEqualTo(NaverCafeSearchCrawler.PAGE_SIZE);
+        Assertions.assertThat(resultItems.size()).isEqualTo(NaverCafeSearchCrawler.PAGE_SIZE);
     }
 }
