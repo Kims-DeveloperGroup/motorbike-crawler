@@ -52,9 +52,10 @@ public class NaverCafeSearchCrawler {
     Document getDocuments(String query, Integer pageNumber) {
         String fragment = urlFragmentFormatter.format(new String[]{query, pageNumber.toString()});
         String url = UriComponentsBuilder.fromHttpUrl(cafeSearchRootUrl)
-                .queryParam("query", query).fragment("{" + fragment + "}").toUriString();
+                .queryParam("query", query).fragment("{" + fragment + "}")
+                .build(false).toUriString();
         log.debug("Request to {}", url);
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, query); // TODO: 2017. 12. 28. java.lang.IllegalArgumentException: Not enough variable values available to expand '"query"'
         return Jsoup.parse(response.getBody());
     }
 
