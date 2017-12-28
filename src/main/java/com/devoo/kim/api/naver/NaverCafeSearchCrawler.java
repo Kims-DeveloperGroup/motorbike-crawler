@@ -2,7 +2,7 @@ package com.devoo.kim.api.naver;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
 import com.devoo.kim.domain.naver.NaverItem;
-import com.devoo.kim.parser.NaverSearchResultElementsParser;
+import com.devoo.kim.parser.NaverSearchResultDocumentParser;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,14 +25,14 @@ public class NaverCafeSearchCrawler {
 
     private static MessageFormat urlFragmentFormatter;
     private RestTemplate restTemplate;
-    private final NaverSearchResultElementsParser resultElementsParszer;
+    private final NaverSearchResultDocumentParser resultElementsParszer;
 
     public static final int PAGE_SIZE = 10;
     public static final String ID_RESULT_ELEMENT = "ArticleSearchResultArea";
 
     @Autowired
     public NaverCafeSearchCrawler(
-            NaverSearchResultElementsParser resultElementsParszer,
+            NaverSearchResultDocumentParser resultElementsParszer,
             @Value("${external.naver.cafeSearch.rootUrl}") String cafeSearchRootUrl
     ) {
         this.resultElementsParszer = resultElementsParszer;

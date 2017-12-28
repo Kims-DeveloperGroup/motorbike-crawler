@@ -2,7 +2,7 @@ package com.devoo.kim.api.naver;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
 import com.devoo.kim.domain.naver.NaverItem;
-import com.devoo.kim.parser.NaverSearchResultElementsParser;
+import com.devoo.kim.parser.NaverSearchResultDocumentParser;
 import org.assertj.core.api.Assertions;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {NaverCafeSearchCrawler.class, NaverSearchResultElementsParser.class})
+@SpringBootTest(classes = {NaverCafeSearchCrawler.class, NaverSearchResultDocumentParser.class})
 public class NaverCafeSearchCrawlerIT {
 
     @Autowired

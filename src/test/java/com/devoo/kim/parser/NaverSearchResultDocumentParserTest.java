@@ -14,12 +14,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class NaverSearchResultElementsParserTest {
+public class NaverSearchResultDocumentParserTest {
     private static final String TEST_URL
             = "https://section.cafe.naver.com/ArticleSearch.nhn?query=125cc 팝니다";
     private static Document testResultPageDocument;
 
-    private NaverSearchResultElementsParser parser = new NaverSearchResultElementsParser();
+    private NaverSearchResultDocumentParser parser = new NaverSearchResultDocumentParser();
 
     @BeforeClass
     public static void setUpTestData() throws NaverApiRequestException {

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class NaverSearchResultElementsParser {
+public class NaverSearchResultDocumentParser {
 
     public List<NaverItem> parse(List<Document> documents) {
         List<NaverItem> parsedItems = new LinkedList<>();
