@@ -1,7 +1,7 @@
 package com.devoo.kim.service;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
-import com.devoo.kim.api.naver.NaverCafeAPI;
+import com.devoo.kim.api.naver.NaverCafeSearchCrawler;
 import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.repository.naver.NaverItemRepository;
 import com.devoo.kim.service.exception.CrawlingFailureException;
@@ -17,12 +17,12 @@ public class NaverCrawlingService {
 
     public static final Integer MAX_PAGE_LIMIT = 0;
     private final String SALE_ITEM_QUERY = "naver";
-    private NaverCafeAPI naverCafeAPI;
+    private NaverCafeSearchCrawler naverCafeSearchCrawler;
     private NaverItemRepository itemRepository;
 
     @Autowired
-    public NaverCrawlingService(NaverCafeAPI naverCafeAPI, NaverItemRepository itemRepository) {
-        this.naverCafeAPI = naverCafeAPI;
+    public NaverCrawlingService(NaverCafeSearchCrawler naverCafeSearchCrawler, NaverItemRepository itemRepository) {
+        this.naverCafeSearchCrawler = naverCafeSearchCrawler;
         this.itemRepository = itemRepository;
     }
 
@@ -30,7 +30,7 @@ public class NaverCrawlingService {
         log.info("Crawling naver sale items...");
         List<NaverItem> searchedItems = null;
         try {
-            searchedItems = naverCafeAPI.search(SALE_ITEM_QUERY, pageLimit, 0);
+            searchedItems = naverCafeSearchCrawler.search(SALE_ITEM_QUERY, pageLimit, 0);
         } catch (NaverApiRequestException e) {
             throw new CrawlingFailureException();
         }

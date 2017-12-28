@@ -4,14 +4,23 @@ import com.devoo.kim.domain.naver.NaverItem;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
-@Service
+@Component
 @Slf4j
 public class NaverSearchResultElementsParser {
+
+    public List<NaverItem> parse(List<Elements> resultElements) {
+        List<NaverItem> parsedItems = new LinkedList<>();
+        for (Elements elements : resultElements) {
+            parsedItems.addAll(parse(elements));
+        }
+        return parsedItems;
+    }
+
     public List<NaverItem> parse(Elements rawResultElements) {
         List<NaverItem> parsedItems = new LinkedList<>();
         rawResultElements.forEach(element -> {

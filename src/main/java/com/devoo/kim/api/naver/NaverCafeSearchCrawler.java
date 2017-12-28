@@ -1,6 +1,8 @@
 package com.devoo.kim.api.naver;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
+import com.devoo.kim.domain.naver.NaverItem;
+import com.devoo.kim.parser.NaverSearchResultElementsParser;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,29 +26,31 @@ public class NaverCafeSearchCrawler {
 
     private static MessageFormat urlFragmentFormatter;
     private RestTemplate restTemplate;
+    private final NaverSearchResultElementsParser resultElementsParszer;
 
     public static final int PAGE_SIZE = 10;
     public static final String ID_RESULT_ELEMENT = "ArticleSearchResultArea";
 
     @Autowired
     public NaverCafeSearchCrawler(
+            NaverSearchResultElementsParser resultElementsParszer,
             @Value("${external.naver.cafeSearch.rootUrl}") String cafeSearchRootUrl
     ) {
+        this.resultElementsParszer = resultElementsParszer;
         this.urlFragmentFormatter = new MessageFormat(fragmentPattern);
         this.restTemplate = new RestTemplate();
         this.cafeSearchRootUrl = cafeSearchRootUrl;
 
     }
 
-    public List<Elements> search(String query, int pageLimit, int startPageNumber) throws NaverApiRequestException {
-
+    public List<NaverItem> search(String query, int pageLimit, int startPageNumber) throws NaverApiRequestException {
         List<Elements> resultElements = new LinkedList<>();
         for (int currentPageNumber = startPageNumber; currentPageNumber < pageLimit; currentPageNumber++) {
             Document document = getDocuments(query, currentPageNumber);
             Elements elementsInPage = extractResultItems(document);
             resultElements.add(elementsInPage);
         }
-        return resultElements;
+        return resultElementsParszer.parse(resultElements);
     }
 
     Document getDocuments(String query, Integer pageNumber) {
