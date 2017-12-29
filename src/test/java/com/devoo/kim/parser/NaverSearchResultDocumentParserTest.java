@@ -40,6 +40,8 @@ public class NaverSearchResultDocumentParserTest {
         assertThat(parsedItem.getDescription()).isNotEmpty();
         assertThat(parsedItem.getTitle()).isNotEmpty();
         assertThat(parsedItem.getQuery()).isNotEmpty();
+        assertThat(parsedItem.getSubTitle()).isNotEmpty();
+        assertThat(parsedItem.getDate()).isNotEmpty();
     }
 
     private static Document getTestDocument(String query) {

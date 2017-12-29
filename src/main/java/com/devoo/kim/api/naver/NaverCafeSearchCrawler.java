@@ -72,7 +72,7 @@ public class NaverCafeSearchCrawler {
     Document getDocuments(String query, Integer pageNumber) throws IOException {
         String url = buildUrlForOnlyQueryEncoded(query, pageNumber);
         log.debug("Fetching document from {}", url);
-        return Jsoup.connect(url).get();
+        return Jsoup.connect(url).header("charset", "UTF8").get();
     }
 
     /**

@@ -30,13 +30,17 @@ public class NaverSearchResultDocumentParser {
             NaverItem item = new NaverItem();
             item.setQuery(query);
             String title = extractTitle(element);
+            String subTitle = extractSubTitle(element);
             String link = element.getElementsByClass("url").get(0).text();
             String cafeName = element.getElementsByClass("cafe_name").get(0).text();
             String description = extractDescription(element);
+            String date = extractDate(element);
             item.setTitle(title);
+            item.setSubTitle(subTitle);
             item.setLink(link);
             item.setCafeName(cafeName);
             item.setDescription(description);
+            item.setDate(date);
             parsedItems.add(item);
         });
         return parsedItems;
@@ -47,6 +51,14 @@ public class NaverSearchResultDocumentParser {
         Elements dt = element.getElementsByTag("dt");
         title = dt.get(0).child(0).text();
         return title;
+    }
+
+    private String extractSubTitle(Element element) {
+        return element.getElementsByTag("span").text();
+    }
+
+    private String extractDate(Element element) {
+        return element.getElementsByClass("tit_sub").text().split(" ")[1];
     }
 
     private String extractDescription(Element element) {
