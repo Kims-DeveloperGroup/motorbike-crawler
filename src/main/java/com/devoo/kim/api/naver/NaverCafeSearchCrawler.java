@@ -77,7 +77,6 @@ public class NaverCafeSearchCrawler {
 
     /**
      * Builds a fetching url of a search result page (* only the value of query param should be encoded.)
-     *
      * @param query
      * @param pageNumber
      * @return
