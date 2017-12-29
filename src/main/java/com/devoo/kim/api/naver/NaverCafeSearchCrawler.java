@@ -44,14 +44,22 @@ public class NaverCafeSearchCrawler {
 
     }
 
+    /**
+     * Search for a given query and returns result items.
+     *
+     * @param query           query words
+     * @param pageLimit       total count of pages to crawl
+     * @param startPageNumber a page number of search result page
+     * @return search result items from crawled pages (init number = 0)
+     * @throws NaverApiRequestException
+     */
     public List<NaverItem> search(String query, int pageLimit, int startPageNumber) throws NaverApiRequestException {
         List<Document> resultDocuments = new LinkedList<>();
         log.info("query: {} \n pageLimit: {} \n startPageNumber: {}", query, pageLimit, startPageNumber);
         for (int currentPageNumber = startPageNumber; currentPageNumber < pageLimit; currentPageNumber++) {
             log.debug("Crawling page {}", currentPageNumber);
-            Document resultPageDocument = null;
             try {
-                resultPageDocument = getDocuments(query, currentPageNumber);
+                Document resultPageDocument = getDocuments(query, currentPageNumber+1);
                 resultDocuments.add(resultPageDocument);
             } catch (IOException e) {
                 log.warn("Fail to get Document from page {}", currentPageNumber);
@@ -60,15 +68,30 @@ public class NaverCafeSearchCrawler {
         return resultElementsParszer.parse(resultDocuments);
     }
 
+    /**
+     * Fetches a document of a result page for a given query and a page number.
+     * @param query
+     * @param pageNumber of result page (not zero based, init number = 1)
+     *                   naver paging begins with 1, but not 0
+     * @return
+     * @throws IOException
+     */
     Document getDocuments(String query, Integer pageNumber) throws IOException {
-        String url = generateUrlForOnlyQueryEncoded(query, pageNumber);
+        String url = buildUrlForOnlyQueryEncoded(query, pageNumber);
         log.debug("Fetching document from {}", url);
         return Jsoup.connect(url).get();
     }
 
-    private String generateUrlForOnlyQueryEncoded(String query, Integer pageNumber) throws UnsupportedEncodingException {
+    /**
+     * Builds a fetching url of a search result page (* only the value of query param should be encoded.)
+     *
+     * @param query
+     * @param pageNumber
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    private String buildUrlForOnlyQueryEncoded(String query, Integer pageNumber) throws UnsupportedEncodingException {
         String encodedQuery = URLEncoder.encode(query, "UTF8");
-        log.debug("encoded query: {}", encodedQuery);
         String fragment = "#{" + urlFragmentFormatter.format(new String[]{encodedQuery, pageNumber.toString()}) + "}";
         String urlWithOnlyQueryStringEncoded = UriComponentsBuilder.fromHttpUrl(cafeSearchRootUrl)
                 .queryParam("query", encodedQuery)
