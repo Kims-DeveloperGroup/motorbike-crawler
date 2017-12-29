@@ -36,11 +36,12 @@ public class NaverCrawlingService {
         try {
             saleItemQuery = queryCreator.getQuery();
             searchedItems = naverCafeSearchCrawler.search(saleItemQuery, pageLimit, 0);
+            log.info("Saving searched {} items...", searchedItems.size());
+            itemRepository.save(searchedItems);
+            log.info("Naver sale item update completed.");
         } catch (Exception e) {
+            log.error("Error updating items, {}", e);
             throw new CrawlingFailureException();
         }
-        log.info("Saving searched {} items...", searchedItems.size());
-        itemRepository.save(searchedItems);
-        log.info("Naver sale item update completed.");
     }
 }

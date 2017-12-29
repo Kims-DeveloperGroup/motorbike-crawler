@@ -2,6 +2,7 @@ package com.devoo.kim.service;
 
 import com.devoo.kim.api.exception.NaverApiRequestException;
 import com.devoo.kim.api.naver.NaverCafeSearchCrawler;
+import com.devoo.kim.query.NaverQueryCreator;
 import com.devoo.kim.repository.naver.NaverItemRepository;
 import com.devoo.kim.service.exception.CrawlingFailureException;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.mockito.Matchers.anyCollection;
@@ -29,10 +31,14 @@ public class NaverCrawlingServiceTest {
     @Mock
     private NaverItemRepository naverItemRepository;
 
+    @Mock
+    private NaverQueryCreator queryCreator;
+
     @Test
-    public void shouldMotorBikeSaleItemsBeUpdated() throws NaverApiRequestException, CrawlingFailureException {
+    public void shouldMotorBikeSaleItemsBeUpdated() throws NaverApiRequestException, CrawlingFailureException, IOException {
         //GIVEN
         int pageLimit = 3;
+        when(queryCreator.getQuery()).thenReturn("test-query");
         when(naverCafeSearchCrawler.search(anyString(), eq(pageLimit), anyInt()))
                 .thenReturn(new ArrayList<>());
         //WHEN

@@ -30,7 +30,7 @@ public class NaverSearchResultDocumentParserTest {
     public void shouldBeGivenRawElementsParsedToNaverItem() {
 
         //when
-        List<NaverItem> parsedItems = parser.parse(testResultPageDocument);
+        List<NaverItem> parsedItems = parser.parse(testResultPageDocument, "query");
 
         //then
         NaverItem parsedItem = parsedItems.get(0);
@@ -39,6 +39,7 @@ public class NaverSearchResultDocumentParserTest {
         assertThat(parsedItem.getCafeName()).isNotEmpty();
         assertThat(parsedItem.getDescription()).isNotEmpty();
         assertThat(parsedItem.getTitle()).isNotEmpty();
+        assertThat(parsedItem.getQuery()).isNotEmpty();
     }
 
     private static Document getTestDocument(String query) {

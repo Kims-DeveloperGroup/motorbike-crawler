@@ -15,19 +15,20 @@ import java.util.List;
 @Slf4j
 public class NaverSearchResultDocumentParser {
 
-    public List<NaverItem> parse(List<Document> documents) {
+    public List<NaverItem> parse(List<Document> documents, String query) {
         List<NaverItem> parsedItems = new LinkedList<>();
         for (Document document : documents) {
-            parsedItems.addAll(parse(document));
+            parsedItems.addAll(parse(document, query));
         }
         return parsedItems;
     }
 
-    public List<NaverItem> parse(Document document) {
+    public List<NaverItem> parse(Document document, String query) {
         Elements rawResultElements = extractResultItems(document);
         List<NaverItem> parsedItems = new LinkedList<>();
         rawResultElements.forEach(element -> {
             NaverItem item = new NaverItem();
+            item.setQuery(query);
             String title = extractTitle(element);
             String link = element.getElementsByClass("url").get(0).text();
             String cafeName = element.getElementsByClass("cafe_name").get(0).text();

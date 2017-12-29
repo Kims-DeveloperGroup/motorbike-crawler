@@ -18,4 +18,5 @@ public class NaverItem {
 
     @JsonProperty("cafeurl")
     private String cafeUrl;
+    private String query;
 }

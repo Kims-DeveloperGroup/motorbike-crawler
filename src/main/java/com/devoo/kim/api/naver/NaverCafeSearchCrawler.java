@@ -58,7 +58,7 @@ public class NaverCafeSearchCrawler {
                 log.warn("Fail to get Document from page {}", currentPageNumber);
             }
         }
-        return resultDocumentParser.parse(resultDocuments);
+        return resultDocumentParser.parse(resultDocuments, query);
     }
 
     /**
