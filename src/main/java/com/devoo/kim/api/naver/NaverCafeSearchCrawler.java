@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -23,25 +22,19 @@ import java.util.List;
 @Slf4j
 public class NaverCafeSearchCrawler {
     private String cafeSearchRootUrl;
-    private String fragmentPattern = "\"query\":\"{0}\",\"sortBy\":0,\"period\":[],\"menuType\":[0],\"searchBy\":0,\"duplicate\":false,\"inCafe\":\"\",\"withOutCafe\":\"\",\"includeAll\":\"\",\"exclude\":\"\",\"include\":\"\",\"exact\":\"\",\"page\":{1},\"escrow\":\"\",\"onSale\":\"\"";
-
-    private static MessageFormat urlFragmentFormatter;
-    private RestTemplate restTemplate;
-    private final NaverSearchResultDocumentParser resultElementsParszer;
-
+    private static final String FRAGMENT_PATTERN = "\"query\":\"{0}\",\"sortBy\":0,\"period\":[],\"menuType\":[0],\"searchBy\":0,\"duplicate\":false,\"inCafe\":\"\",\"withOutCafe\":\"\",\"includeAll\":\"\",\"exclude\":\"\",\"include\":\"\",\"exact\":\"\",\"page\":{1},\"escrow\":\"\",\"onSale\":\"\"";
+    private static final MessageFormat urlFragmentFormatter = new MessageFormat(FRAGMENT_PATTERN);
     public static final int PAGE_SIZE = 10;
     public static final String ID_RESULT_ELEMENT = "ArticleSearchResultArea";
 
+    private final NaverSearchResultDocumentParser resultDocumentParser;
+
     @Autowired
     public NaverCafeSearchCrawler(
-            NaverSearchResultDocumentParser resultElementsParszer,
-            @Value("${external.naver.cafeSearch.rootUrl}") String cafeSearchRootUrl
-    ) {
-        this.resultElementsParszer = resultElementsParszer;
-        this.urlFragmentFormatter = new MessageFormat(fragmentPattern);
-        this.restTemplate = new RestTemplate();
+            NaverSearchResultDocumentParser resultDocumentParser,
+            @Value("${external.naver.cafeSearch.rootUrl}") String cafeSearchRootUrl) {
+        this.resultDocumentParser = resultDocumentParser;
         this.cafeSearchRootUrl = cafeSearchRootUrl;
-
     }
 
     /**
@@ -65,7 +58,7 @@ public class NaverCafeSearchCrawler {
                 log.warn("Fail to get Document from page {}", currentPageNumber);
             }
         }
-        return resultElementsParszer.parse(resultDocuments);
+        return resultDocumentParser.parse(resultDocuments);
     }
 
     /**
@@ -93,10 +86,9 @@ public class NaverCafeSearchCrawler {
     private String buildUrlForOnlyQueryEncoded(String query, Integer pageNumber) throws UnsupportedEncodingException {
         String encodedQuery = URLEncoder.encode(query, "UTF8");
         String fragment = "#{" + urlFragmentFormatter.format(new String[]{encodedQuery, pageNumber.toString()}) + "}";
-        String urlWithOnlyQueryStringEncoded = UriComponentsBuilder.fromHttpUrl(cafeSearchRootUrl)
+        return UriComponentsBuilder.fromHttpUrl(cafeSearchRootUrl)
                 .queryParam("query", encodedQuery)
                 .queryParam("page", pageNumber)
                 .fragment(fragment).build(false).toUriString();
-        return urlWithOnlyQueryStringEncoded;
     }
 }
