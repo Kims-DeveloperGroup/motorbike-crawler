@@ -28,5 +28,14 @@
             <appender-ref ref="stdout"/>
         </root>
         <logger name="com.devoo.kim" level="DEBUG"/>
+        <!--<logger name="org.springframework.web" level="DEBUG"/>-->
     </springProfile>
+
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="stdout"/>
+        </root>
+        <logger name="com.devoo.kim" level="DEBUG"/>
+    </springProfile>
+
 </configuration>

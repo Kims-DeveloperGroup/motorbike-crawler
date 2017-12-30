@@ -1,5 +1,8 @@
 external:
   naver:
+    cafeSearch:
+      rootUrl: https://section.cafe.naver.com/ArticleSearch.nhn
+      params: "?query={0}#{\"query\":\"{0}\",\"sortBy\":0,\"period\":[],\"menuType\":[0],\"searchBy\":0,\"duplicate\":false,\"inCafe\":\"\",\"withOutCafe\":\"\",\"includeAll\":\"\",\"exclude\":\"\",\"include\":\"\",\"exact\":\"\",\"page\":1,\"escrow\":\"\",\"onSale\":\"\"}"
     pagination:
       size: 100  #max: 100, default: 10
     cafe:
