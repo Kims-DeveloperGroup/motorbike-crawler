@@ -13,6 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Matchers.anyInt;
@@ -35,16 +37,17 @@ public class NaverCrawlingServiceTest {
     private NaverQueryCreator queryCreator;
 
     @Test
-    public void shouldMotorBikeSaleItemsBeUpdated() throws NaverApiRequestException, CrawlingFailureException, IOException {
+    public void shouldItemsBeSearchedAndUpdatedAsManyTimesAsCountOfQueries() throws NaverApiRequestException, CrawlingFailureException, IOException {
         //GIVEN
         int pageLimit = 3;
-        when(queryCreator.getQuery()).thenReturn("test-query");
+        List<String> mockQueries = Arrays.asList("query1", "query2");
+        when(queryCreator.getQueries()).thenReturn(mockQueries);
         when(naverCafeSearchCrawler.search(anyString(), eq(pageLimit), anyInt()))
                 .thenReturn(new ArrayList<>());
         //WHEN
         naverCrawlingService.updateSaleItems(pageLimit);
         //THEN
-        verify(naverCafeSearchCrawler, times(1)).search(anyString(), eq(pageLimit), anyInt());
-        verify(naverItemRepository, times(1)).save(anyCollection());
+        verify(naverCafeSearchCrawler, times(mockQueries.size())).search(anyString(), eq(pageLimit), anyInt());
+        verify(naverItemRepository, times(mockQueries.size())).save(anyCollection());
     }
 }

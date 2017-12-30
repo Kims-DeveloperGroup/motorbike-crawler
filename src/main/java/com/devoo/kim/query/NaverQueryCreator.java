@@ -14,12 +14,8 @@ public class NaverQueryCreator {
     private final Path QUERY_FILE_PATH = Paths.get("naver.query");
 
 
-    public String getQuery() throws IOException {
-        StringBuilder queryBuilder = new StringBuilder();
-        readWordsFromQueryFile().forEach(query -> {
-            queryBuilder.append(query).append(" ");
-        });
-        return queryBuilder.toString();
+    public List<String> getQueries() throws IOException {
+        return readWordsFromQueryFile();
     }
 
     private List<String> readWordsFromQueryFile() throws IOException {

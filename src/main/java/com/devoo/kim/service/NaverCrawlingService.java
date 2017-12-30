@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -16,7 +17,6 @@ import java.util.List;
 public class NaverCrawlingService {
 
     public static final Integer MAX_PAGE_LIMIT = 0;
-    private String saleItemQuery = "naver";
     private NaverCafeSearchCrawler naverCafeSearchCrawler;
     private NaverItemRepository itemRepository;
     private NaverQueryCreator queryCreator;
@@ -30,15 +30,17 @@ public class NaverCrawlingService {
         this.queryCreator = queryCreator;
     }
 
-    public void updateSaleItems(int pageLimit) throws CrawlingFailureException {
+    public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException {
         log.info("Crawling naver sale items...");
         List<NaverItem> searchedItems = null;
+        List<String> queries = queryCreator.getQueries();
         try {
-            saleItemQuery = queryCreator.getQuery();
-            searchedItems = naverCafeSearchCrawler.search(saleItemQuery, pageLimit, 0);
-            log.info("Saving searched {} items...", searchedItems.size());
-            itemRepository.save(searchedItems);
-            log.info("Naver sale item update completed.");
+            for (String query : queries) {
+                searchedItems = naverCafeSearchCrawler.search(query, pageLimit, 0);
+                log.info("Saving searched {} items...", searchedItems.size());
+                itemRepository.save(searchedItems);
+                log.info("Naver sale item update completed.");
+            }
         } catch (Exception e) {
             log.error("Error updating items, {}", e);
             throw new CrawlingFailureException();
