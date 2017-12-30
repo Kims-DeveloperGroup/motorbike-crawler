@@ -58,7 +58,8 @@ public class NaverSearchResultDocumentParser {
     }
 
     private String extractDate(Element element) {
-        return element.getElementsByClass("tit_sub").text().split(" ")[1];
+        String[] split = element.getElementsByClass("tit_sub").text().split(" ");
+        return split.length == 2 ? split[1] : split[0];
     }
 
     private String extractDescription(Element element) {
