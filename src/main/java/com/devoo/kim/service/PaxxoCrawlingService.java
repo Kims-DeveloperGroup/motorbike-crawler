@@ -12,6 +12,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -64,12 +66,16 @@ public class PaxxoCrawlingService {
         this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
         List<PaxxoItem> items;
         try {
+            Instant startTime = Instant.now();
             items = paxxoSaleItemCrawler.getItems(startPageNumber, pageLimit);
             log.info("{} items were collected form Paxxo", items.size());
             for (PaxxoItem item : items) {
                 item.generateUrl(itemUrlLinkFormatter);
             }
             paxxoRepository.saveItems(items);
+            Instant endTime = Instant.now();
+            log.info("Crawling time page {} - {}: {} seconds.", startPageNumber,
+                    startPageNumber + pageLimit - 1, Duration.between(startTime, endTime).toMillis() / 1000);
         } catch (Exception e) {
             log.error("Exception in page {} : {}", startPageNumber, e);
             return 0;
