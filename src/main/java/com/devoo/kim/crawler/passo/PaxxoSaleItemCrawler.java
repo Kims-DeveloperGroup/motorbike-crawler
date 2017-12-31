@@ -46,8 +46,9 @@ public class PaxxoSaleItemCrawler {
      */
     public List<PaxxoItem> getItems(int startPageNumber, int pageLimit) throws JAXBException {
         PaxxoItemMetadata metadata = getItemMetadata("", "");
-        int lastPage = metadata.getLastPageNumber(pageLimit);
+        int lastPage = metadata.getLastPageNumber(startPageNumber, pageLimit);
         List<PaxxoItem> items = new ArrayList<>();
+        log.debug("Getting items {} - {}", startPageNumber, lastPage);
         for (int current = startPageNumber; current <= lastPage; current++) {
             items.addAll(getItemsInPage("", "", current));
         }

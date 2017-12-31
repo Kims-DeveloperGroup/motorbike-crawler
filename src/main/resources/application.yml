@@ -10,6 +10,10 @@ external:
       clientId: WubhieoC0PbQRncZgofe
       clientSecret: tYAhfACYdU
   paxxo:
+    job:
+      chunkSize: 200
+      initThread: 3
+      maxThread: 8
     pagination:
       size: 50
     country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=

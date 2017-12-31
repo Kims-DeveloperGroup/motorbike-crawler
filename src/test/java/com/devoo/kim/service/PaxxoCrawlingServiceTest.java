@@ -73,7 +73,7 @@ public class PaxxoCrawlingServiceTest {
         int updated = 0;
         WHEN:
         {
-            updated = paxxoCrawlingService.updateItems(pageLimit);
+            updated = paxxoCrawlingService.updateItems(0, pageLimit);
         }
 
         THEN:
