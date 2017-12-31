@@ -1,7 +1,7 @@
 package com.devoo.kim.service;
 
-import com.devoo.kim.api.exception.NaverApiRequestException;
-import com.devoo.kim.api.naver.NaverCafeSearchCrawler;
+import com.devoo.kim.crawler.exception.NaverApiRequestException;
+import com.devoo.kim.crawler.naver.NaverCafeSearchCrawler;
 import com.devoo.kim.query.NaverQueryCreator;
 import com.devoo.kim.repository.naver.NaverItemRepository;
 import com.devoo.kim.service.exception.CrawlingFailureException;

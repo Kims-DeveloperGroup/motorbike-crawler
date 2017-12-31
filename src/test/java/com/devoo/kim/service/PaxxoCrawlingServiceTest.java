@@ -1,6 +1,6 @@
 package com.devoo.kim.service;
 
-import com.devoo.kim.api.passo.PaxxoApiClient;
+import com.devoo.kim.crawler.passo.PaxxoSaleItemCrawler;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
@@ -30,7 +30,7 @@ public class PaxxoCrawlingServiceTest {
     private PaxxoCrawlingService paxxoCrawlingService;
 
     @Mock
-    private PaxxoApiClient paxxoApiClient;
+    private PaxxoSaleItemCrawler paxxoSaleItemCrawler;
 
     @Mock
     private PaxxoRepository paxxoRepository;
@@ -44,7 +44,7 @@ public class PaxxoCrawlingServiceTest {
     public void shouldMakerIndicesBeUpdated() {
         GIVEN:
         {
-            when(paxxoApiClient.getMakerIndices()).thenReturn(makerIndices);
+            when(paxxoSaleItemCrawler.getMakerIndices()).thenReturn(makerIndices);
             when(makerIndices.getMakers()).thenReturn(Arrays.asList(mockMakers));
             doNothing().when(paxxoRepository).saveMakerIndices(anyCollectionOf(Maker.class));
         }
@@ -66,7 +66,7 @@ public class PaxxoCrawlingServiceTest {
         GIVEN:
         {
             items.add(new PaxxoItem());
-            when(paxxoApiClient.getItems(pageLimit)).thenReturn(items);
+            when(paxxoSaleItemCrawler.getItems(pageLimit)).thenReturn(items);
             doNothing().when(paxxoRepository).saveItems(any());
         }
 

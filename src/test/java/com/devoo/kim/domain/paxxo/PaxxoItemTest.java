@@ -1,6 +1,6 @@
 package com.devoo.kim.domain.paxxo;
 
-import com.devoo.kim.api.passo.PaxxoApiClient;
+import com.devoo.kim.crawler.passo.PaxxoSaleItemCrawler;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +17,11 @@ import java.text.MessageFormat;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = PaxxoApiClient.class)
+@SpringBootTest(classes = PaxxoSaleItemCrawler.class)
 public class PaxxoItemTest {
 
     @Autowired
-    PaxxoApiClient paxxoApiClient;
+    PaxxoSaleItemCrawler paxxoSaleItemCrawler;
 
     @Value("${external.paxxo.item-url-pattern}")
     private String itemUrlPattern;
@@ -31,7 +31,7 @@ public class PaxxoItemTest {
         //GIVEN
         MessageFormat urlFormatter = new MessageFormat(itemUrlPattern);
         RestTemplate restTemplate = new RestTemplate();
-        PaxxoItem item = paxxoApiClient.getItems(1).get(0);
+        PaxxoItem item = paxxoSaleItemCrawler.getItems(1).get(0);
 
         //WHEN
         item.generateUrl(urlFormatter);

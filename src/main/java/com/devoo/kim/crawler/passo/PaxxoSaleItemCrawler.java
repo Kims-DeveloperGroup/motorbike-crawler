@@ -1,4 +1,4 @@
-package com.devoo.kim.api.passo;
+package com.devoo.kim.crawler.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PaxxoApiClient {
+public class PaxxoSaleItemCrawler {
 
     @Value("${external.paxxo.item-search-api}")
     private String itemSearchApi;

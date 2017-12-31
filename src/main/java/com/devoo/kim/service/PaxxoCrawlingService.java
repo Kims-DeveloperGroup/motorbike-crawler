@@ -1,6 +1,6 @@
 package com.devoo.kim.service;
 
-import com.devoo.kim.api.passo.PaxxoApiClient;
+import com.devoo.kim.crawler.passo.PaxxoSaleItemCrawler;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.repository.PaxxoRepository;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class PaxxoCrawlingService {
-    private PaxxoApiClient paxxoApiClient;
+    private PaxxoSaleItemCrawler paxxoSaleItemCrawler;
     private PaxxoRepository paxxoRepository;
     private MessageFormat itemUrlLinkFormatter;
 
@@ -29,9 +29,9 @@ public class PaxxoCrawlingService {
 
     public static final int MAX_PAGE_LIMIT = 0;
 
-    public PaxxoCrawlingService(@Autowired PaxxoApiClient paxxoApiClient,
+    public PaxxoCrawlingService(@Autowired PaxxoSaleItemCrawler paxxoSaleItemCrawler,
                                 @Autowired PaxxoRepository indicesRepository) {
-        this.paxxoApiClient = paxxoApiClient;
+        this.paxxoSaleItemCrawler = paxxoSaleItemCrawler;
         this.paxxoRepository = indicesRepository;
     }
 
@@ -40,7 +40,7 @@ public class PaxxoCrawlingService {
      */
     public void updatePaxxoMakerIndices() {
         log.info("Updating paxxo maker indices...");
-        List<Maker> makerIndices = paxxoApiClient.getMakerIndices().getMakers();
+        List<Maker> makerIndices = paxxoSaleItemCrawler.getMakerIndices().getMakers();
         paxxoRepository.saveMakerIndices(makerIndices);
         log.info("Paxxo maker indices are updated");
     }
@@ -53,7 +53,7 @@ public class PaxxoCrawlingService {
         List<PaxxoItem> items;
         try {
             log.debug("Page Limit: {}", pageLimit);
-            items = paxxoApiClient.getItems(pageLimit);
+            items = paxxoSaleItemCrawler.getItems(pageLimit);
             log.info("{} items were collected form Paxxo", items.size());
             this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
             for (PaxxoItem item : items) {
