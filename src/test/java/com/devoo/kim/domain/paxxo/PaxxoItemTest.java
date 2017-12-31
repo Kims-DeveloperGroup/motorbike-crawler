@@ -31,7 +31,7 @@ public class PaxxoItemTest {
         //GIVEN
         MessageFormat urlFormatter = new MessageFormat(itemUrlPattern);
         RestTemplate restTemplate = new RestTemplate();
-        PaxxoItem item = paxxoSaleItemCrawler.getItems(1).get(0);
+        PaxxoItem item = paxxoSaleItemCrawler.getItems(0, 1).get(0);
 
         //WHEN
         item.generateUrl(urlFormatter);

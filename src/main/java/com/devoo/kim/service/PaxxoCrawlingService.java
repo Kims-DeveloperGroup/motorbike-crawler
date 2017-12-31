@@ -53,7 +53,7 @@ public class PaxxoCrawlingService {
         List<PaxxoItem> items;
         try {
             log.debug("Page Limit: {}", pageLimit);
-            items = paxxoSaleItemCrawler.getItems(pageLimit);
+            items = paxxoSaleItemCrawler.getItems(0, pageLimit);
             log.info("{} items were collected form Paxxo", items.size());
             this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
             for (PaxxoItem item : items) {

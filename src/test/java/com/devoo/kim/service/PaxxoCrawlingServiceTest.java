@@ -66,7 +66,7 @@ public class PaxxoCrawlingServiceTest {
         GIVEN:
         {
             items.add(new PaxxoItem());
-            when(paxxoSaleItemCrawler.getItems(pageLimit)).thenReturn(items);
+            when(paxxoSaleItemCrawler.getItems(0, pageLimit)).thenReturn(items);
             doNothing().when(paxxoRepository).saveItems(any());
         }
 

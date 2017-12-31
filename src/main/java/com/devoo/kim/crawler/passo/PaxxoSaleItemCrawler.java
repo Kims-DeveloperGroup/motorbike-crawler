@@ -39,15 +39,16 @@ public class PaxxoSaleItemCrawler {
 
     /**
      * Get Items from Paxxo. Items are not guaranteed to be in order.
+     * @param startPageNumber A page number of beginning for crawling (min: 0)
      * @param pageLimit : the number of page to be retrieved.
      * @return items
      * @throws JAXBException in case of failure to parse items in xml.
      */
-    public List<PaxxoItem> getItems(int pageLimit) throws JAXBException {
+    public List<PaxxoItem> getItems(int startPageNumber, int pageLimit) throws JAXBException {
         PaxxoItemMetadata metadata = getItemMetadata("", "");
         int lastPage = metadata.getLastPageNumber(pageLimit);
         List<PaxxoItem> items = new ArrayList<>();
-        for (int current =0; current <= lastPage; current++) {
+        for (int current = startPageNumber; current <= lastPage; current++) {
             items.addAll(getItemsInPage("", "", current));
         }
         return items;

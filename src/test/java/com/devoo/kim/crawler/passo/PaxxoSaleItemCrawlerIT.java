@@ -59,7 +59,7 @@ public class PaxxoSaleItemCrawlerIT {
 
         List<PaxxoItem> result;
         WHEN: {
-            result = paxxoSaleItemCrawler.getItems(pageLimit);
+            result = paxxoSaleItemCrawler.getItems(0, pageLimit);
         }
         int expectedItems = this.pageSize * pageLimit;
         THEN: {
