@@ -68,6 +68,28 @@ public class PaxxoSaleItemCrawlerIT {
     }
 
     @Test
+    public void shouldRetrieveLimitedNumberOfItemsFromGivenPageNumberWhenStartPageNumberAndSpecificLimitNumberIsGiven() throws JAXBException {
+
+        int pageLimit;
+        GIVEN:
+        {
+            pageLimit = 2;
+        }
+
+        List<PaxxoItem> result;
+        WHEN:
+        {
+            int startPageNumber = 10000;
+            result = paxxoSaleItemCrawler.getItems(startPageNumber, pageLimit);
+        }
+        int expectedItems = this.pageSize * pageLimit;
+        THEN:
+        {
+            Assertions.assertThat(result.size()).isEqualTo(expectedItems);
+        }
+    }
+
+    @Test
     public void shouldRetrieveMakerIndex() {
         GIVEN: {}
 
