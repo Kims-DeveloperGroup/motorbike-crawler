@@ -26,13 +26,17 @@ public class CrawlerApplicationController {
     }
 
     @PutMapping("/paxxo/sale-items")
-    public void updatePaxxoSalesItem(@RequestParam(required = false) Integer pageLimit) {
+    public void updatePaxxoSalesItem(@RequestParam(required = false) Integer startPageNumber,
+                                     @RequestParam(required = false) Integer pageLimit) {
         paxxoCrawlingService.updatePaxxoMakerIndices();
         log.info("Crawling items from Paxxo...");
         if (pageLimit == null) {
             pageLimit = PaxxoCrawlingService.MAX_PAGE_LIMIT;
         }
-        paxxoCrawlingService.updateItems(pageLimit);
+        if (startPageNumber == null) {
+            startPageNumber = 0;
+        }
+        paxxoCrawlingService.updateItemsWithTaskExecutor(startPageNumber, pageLimit);
     }
 
     @PutMapping("/naver/sale-items")

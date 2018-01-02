@@ -74,7 +74,7 @@ public class PaxxoCrawlingService {
             }
             paxxoRepository.saveItems(items);
             Instant endTime = Instant.now();
-            log.info("Crawling time page {} - {}: {} seconds.", startPageNumber,
+            log.info("Crawling completed from page {} - {}: time: {} seconds.", startPageNumber,
                     startPageNumber + pageLimit - 1, Duration.between(startTime, endTime).toMillis() / 1000);
         } catch (Exception e) {
             log.error("Exception in page {} : {}", startPageNumber, e);
@@ -88,10 +88,10 @@ public class PaxxoCrawlingService {
      *
      * @return
      */
-    public void updateItems(int pageLimit) {
-        for (int startPageNumber = 0; startPageNumber < pageLimit; startPageNumber += this.pageChunkSize) {
+    public void updateItemsWithTaskExecutor(int startPageNumber, int pageLimit) {
+        for (; startPageNumber < pageLimit; startPageNumber += this.pageChunkSize) {
             final int pageNumber = startPageNumber;
-            log.debug("Updating items in page {} - {}", pageNumber, pageNumber + pageChunkSize - 1);
+            log.debug("Task request: updating paxxo items in page {} - {}", pageNumber, pageNumber + pageChunkSize - 1);
             taskExecutor.execute(() -> PaxxoCrawlingService.this.updateItems(pageNumber, pageChunkSize));
         }
     }
