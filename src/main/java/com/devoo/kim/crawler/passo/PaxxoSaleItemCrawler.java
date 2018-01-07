@@ -5,10 +5,13 @@ import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoItems;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -32,10 +35,15 @@ public class PaxxoSaleItemCrawler {
     @Value("${external.paxxo.country-maker-index-api}")
     private String makerCountryIndexApi;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
     private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
     private static final String ALL_ITEM_QUERY = "@(maker_idx:";
+
+    @Autowired
+    public PaxxoSaleItemCrawler(@Qualifier("paxxoHttpClientRequestFactory") HttpComponentsClientHttpRequestFactory paxxoHttpClientRequestFactory) {
+        this.restTemplate = new RestTemplate(paxxoHttpClientRequestFactory);
+    }
 
     /**
      * Get Items from Paxxo. Items are not guaranteed to be in order.
