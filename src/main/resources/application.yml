@@ -12,8 +12,14 @@ external:
   paxxo:
     job:
       chunkSize: 200
-      initThread: 3
+      initThread: 4
       maxThread: 8
+    httpclient:
+      maxTotalConnection: 16
+      maxConnectionPerRoute: 8
+      connectionTimeToLive: 100000
+      connectionTimeout: 10000
+      readTimeout: 30000
     pagination:
       size: 50
     country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=
