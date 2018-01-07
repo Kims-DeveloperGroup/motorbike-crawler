@@ -15,8 +15,8 @@ external:
       initThread: 4
       maxThread: 8
     httpclient:
-      maxTotalConnection: 16
-      maxConnectionPerRoute: 8
+      maxTotalConnection: 300
+      maxConnectionPerRoute: 300
       connectionTimeToLive: 100000
       connectionTimeout: 10000
       readTimeout: 30000

@@ -13,9 +13,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.xml.bind.JAXBException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
@@ -73,7 +75,7 @@ public class PaxxoCrawlingServiceTest {
         int updated = 0;
         WHEN:
         {
-            updated = paxxoCrawlingService.updateItems(0, pageLimit);
+            updated = paxxoCrawlingService.updateItems(0, pageLimit, new CountDownLatch(1), Instant.now());
         }
 
         THEN:

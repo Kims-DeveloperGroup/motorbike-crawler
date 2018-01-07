@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by rikim on 2017. 8. 14..
@@ -32,7 +34,7 @@ public class PaxxoCrawlingService {
     private String itemUrlPattern = "";
 
     @Value("${external.paxxo.job.chunkSize}")
-    private int pageChunkSize;
+    private int pageChunkSize = 100;
 
     public static final int MAX_PAGE_LIMIT = 0;
 
@@ -62,9 +64,9 @@ public class PaxxoCrawlingService {
      * @param pageLimit max page count of crawling items
      * @return the number of items newly updated items with its link.
      */
-    public int updateItems(int startPageNumber, int pageLimit) {
+    public int updateItems(int startPageNumber, int pageLimit, CountDownLatch countDownLatch, Instant initTime) {
         this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
-        List<PaxxoItem> items;
+        List<PaxxoItem> items = new ArrayList<>();
         try {
             Instant startTime = Instant.now();
             items = paxxoSaleItemCrawler.getItems(startPageNumber, pageLimit);
@@ -74,11 +76,15 @@ public class PaxxoCrawlingService {
             }
             paxxoRepository.saveItems(items);
             Instant endTime = Instant.now();
-            log.info("Crawling completed from page {} - {}: time: {} seconds.", startPageNumber,
+            log.info("Crawling completed from page {} - {}: time: {} seconds.",
+                    startPageNumber,
                     startPageNumber + pageLimit - 1, Duration.between(startTime, endTime).toMillis() / 1000);
         } catch (Exception e) {
             log.error("Exception in page {} : {}", startPageNumber, e);
-            return 0;
+        } finally {
+            countDownLatch.countDown();
+            log.debug("{} tasks remains to be completed @ {}",
+                    countDownLatch.getCount(), Duration.between(initTime, Instant.now()).toMillis());
         }
         return items.size();
     }
@@ -89,10 +95,19 @@ public class PaxxoCrawlingService {
      * @return
      */
     public void updateItemsWithTaskExecutor(int startPageNumber, int pageLimit) {
+        CountDownLatch countDown = new CountDownLatch(pageLimit / pageChunkSize);
+        Instant startTime = Instant.now();
         for (; startPageNumber < pageLimit; startPageNumber += this.pageChunkSize) {
             final int pageNumber = startPageNumber;
             log.debug("Task request: updating paxxo items in page {} - {}", pageNumber, pageNumber + pageChunkSize - 1);
-            taskExecutor.execute(() -> PaxxoCrawlingService.this.updateItems(pageNumber, pageChunkSize));
+            taskExecutor.execute(() -> PaxxoCrawlingService.this.updateItems(pageNumber, pageChunkSize, countDown, startTime));
+        }
+        try {
+            countDown.await();
+            Instant endTime = Instant.now();
+            log.info("{} pages crawling time : {} seconds.", pageLimit, Duration.between(startTime, endTime).toMillis() / 1000);
+        } catch (InterruptedException e) {
+            log.error("{}", e);
         }
     }
 }
