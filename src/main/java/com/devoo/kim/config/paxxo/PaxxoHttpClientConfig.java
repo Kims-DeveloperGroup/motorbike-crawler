@@ -13,19 +13,19 @@ import java.util.concurrent.TimeUnit;
 public class PaxxoHttpClientConfig {
 
     @Value("${external.paxxo.httpclient.connectionTimeout}")
-    private final int connectionTimeoutInMills = 10 * 1000;
+    private int connectionTimeoutInMills;
 
     @Value("${external.paxxo.httpclient.readTimeout}")
-    private final int readTimeoutInMills = connectionTimeoutInMills * 2;
+    private int readTimeoutInMills;
 
     @Value("${external.paxxo.httpclient.connectionTimeToLive}")
-    private final int connectionTimeToLive = 100000;
+    private int connectionTimeToLive;
 
     @Value("${external.paxxo.httpclient.maxTotalConnection}")
-    private final int maxTotalConnection = 16;
+    private int maxTotalConnection;
 
     @Value("${external.paxxo.httpclient.maxConnectionPerRoute}")
-    private final int maxConnectionPerRoute = 8;
+    private int maxConnectionPerRoute;
 
     @Bean
     public HttpComponentsClientHttpRequestFactory paxxoHttpClientRequestFactory() {

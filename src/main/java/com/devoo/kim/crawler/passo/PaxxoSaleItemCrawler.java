@@ -15,6 +15,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.JAXBException;
@@ -58,7 +59,11 @@ public class PaxxoSaleItemCrawler {
         List<PaxxoItem> items = new ArrayList<>();
         log.debug("Getting items {} - {}", startPageNumber, lastPage);
         for (int current = startPageNumber; current <= lastPage; current++) {
-            items.addAll(getItemsInPage("", "", current));
+            try {
+                items.addAll(getItemsInPage("", "", current));
+            } catch (RestClientException e) {
+                log.error("failed to crawl page {} : {}", current, e);
+            }
         }
         return items;
     }

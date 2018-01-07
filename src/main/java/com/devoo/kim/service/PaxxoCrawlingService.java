@@ -64,7 +64,9 @@ public class PaxxoCrawlingService {
      * @param pageLimit max page count of crawling items
      * @return the number of items newly updated items with its link.
      */
-    public int updateItems(int startPageNumber, int pageLimit, CountDownLatch countDownLatch, Instant initTime) {
+    public int updateItems(int startPageNumber, int pageLimit,
+                           CountDownLatch countDownLatch,
+                           Instant initTime, ArrayList<Long> timeLines) {
         this.itemUrlLinkFormatter = new MessageFormat(itemUrlPattern);
         List<PaxxoItem> items = new ArrayList<>();
         try {
@@ -83,8 +85,10 @@ public class PaxxoCrawlingService {
             log.error("Exception in page {} : {}", startPageNumber, e);
         } finally {
             countDownLatch.countDown();
+            long timeline = Duration.between(initTime, Instant.now()).toMillis();
+            timeLines.add(timeline);
             log.debug("{} tasks remains to be completed @ {}",
-                    countDownLatch.getCount(), Duration.between(initTime, Instant.now()).toMillis());
+                    countDownLatch.getCount(), timeline);
         }
         return items.size();
     }
@@ -97,15 +101,23 @@ public class PaxxoCrawlingService {
     public void updateItemsWithTaskExecutor(int startPageNumber, int pageLimit) {
         CountDownLatch countDown = new CountDownLatch(pageLimit / pageChunkSize);
         Instant startTime = Instant.now();
+        ArrayList<Long> timeLines = new ArrayList<>();
         for (; startPageNumber < pageLimit; startPageNumber += this.pageChunkSize) {
             final int pageNumber = startPageNumber;
             log.debug("Task request: updating paxxo items in page {} - {}", pageNumber, pageNumber + pageChunkSize - 1);
-            taskExecutor.execute(() -> PaxxoCrawlingService.this.updateItems(pageNumber, pageChunkSize, countDown, startTime));
+            taskExecutor.execute(() -> {
+                PaxxoCrawlingService.this.updateItems(pageNumber, pageChunkSize,
+                        countDown, startTime, timeLines);
+            });
         }
         try {
             countDown.await();
             Instant endTime = Instant.now();
             log.info("{} pages crawling time : {} seconds.", pageLimit, Duration.between(startTime, endTime).toMillis() / 1000);
+            timeLines.forEach(timeline -> {
+//                log.debug("{}", timeline.longValue());
+                System.out.println(timeline.longValue());
+            });
         } catch (InterruptedException e) {
             log.error("{}", e);
         }

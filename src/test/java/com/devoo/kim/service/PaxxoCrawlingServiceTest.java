@@ -75,7 +75,8 @@ public class PaxxoCrawlingServiceTest {
         int updated = 0;
         WHEN:
         {
-            updated = paxxoCrawlingService.updateItems(0, pageLimit, new CountDownLatch(1), Instant.now());
+            updated = paxxoCrawlingService.updateItems(0, pageLimit,
+                    new CountDownLatch(1), Instant.now(), new ArrayList<>());
         }
 
         THEN:
