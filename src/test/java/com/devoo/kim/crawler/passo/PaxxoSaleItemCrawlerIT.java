@@ -1,5 +1,6 @@
 package com.devoo.kim.crawler.passo;
 
+import com.devoo.kim.config.paxxo.PaxxoHttpClientConfig;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
@@ -20,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
  * Created by rikim on 2017. 7. 30..
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PaxxoSaleItemCrawler.class})
+@SpringBootTest(classes = {PaxxoSaleItemCrawler.class, PaxxoHttpClientConfig.class})
 @ActiveProfiles("test")
 public class PaxxoSaleItemCrawlerIT {
     @Autowired
