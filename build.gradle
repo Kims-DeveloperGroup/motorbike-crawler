@@ -12,6 +12,8 @@ repositories {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:1.4.7.RELEASE")
     compile 'org.springframework.data:spring-data-elasticsearch:2.1.9.RELEASE'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.4'
+
     compile 'org.jsoup:jsoup:1.11.2'
     compileOnly "org.projectlombok:lombok:1.16.16"
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'

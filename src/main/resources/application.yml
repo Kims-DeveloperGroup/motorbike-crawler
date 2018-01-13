@@ -10,6 +10,16 @@ external:
       clientId: WubhieoC0PbQRncZgofe
       clientSecret: tYAhfACYdU
   paxxo:
+    job:
+      chunkSize: 200
+      initThread: 4
+      maxThread: 8
+    httpclient:
+      maxTotalConnection: 300
+      maxConnectionPerRoute: 300
+      connectionTimeToLive: 100000
+      connectionTimeout: 30000
+      readTimeout: 120000
     pagination:
       size: 50
     country-maker-index-api: http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=process&process=country&idx=

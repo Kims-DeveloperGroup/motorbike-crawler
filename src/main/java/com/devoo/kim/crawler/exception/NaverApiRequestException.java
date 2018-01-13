@@ -1,4 +1,4 @@
-package com.devoo.kim.api.exception;
+package com.devoo.kim.crawler.exception;
 
 public class NaverApiRequestException extends Exception {
 }

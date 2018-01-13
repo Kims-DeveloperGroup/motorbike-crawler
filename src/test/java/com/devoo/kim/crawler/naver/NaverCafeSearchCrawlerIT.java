@@ -1,6 +1,6 @@
-package com.devoo.kim.api.naver;
+package com.devoo.kim.crawler.naver;
 
-import com.devoo.kim.api.exception.NaverApiRequestException;
+import com.devoo.kim.crawler.exception.NaverApiRequestException;
 import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.parser.NaverSearchResultDocumentParser;
 import org.assertj.core.api.Assertions;

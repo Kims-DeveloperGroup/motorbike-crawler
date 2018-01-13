@@ -1,17 +1,21 @@
-package com.devoo.kim.api.passo;
+package com.devoo.kim.crawler.passo;
 
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoItems;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.JAXBException;
@@ -24,7 +28,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PaxxoApiClient {
+public class PaxxoSaleItemCrawler {
 
     @Value("${external.paxxo.item-search-api}")
     private String itemSearchApi;
@@ -32,23 +36,34 @@ public class PaxxoApiClient {
     @Value("${external.paxxo.country-maker-index-api}")
     private String makerCountryIndexApi;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
     private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
     private static final String ALL_ITEM_QUERY = "@(maker_idx:";
 
+    @Autowired
+    public PaxxoSaleItemCrawler(@Qualifier("paxxoHttpClientRequestFactory") HttpComponentsClientHttpRequestFactory paxxoHttpClientRequestFactory) {
+        this.restTemplate = new RestTemplate(paxxoHttpClientRequestFactory);
+    }
+
     /**
      * Get Items from Paxxo. Items are not guaranteed to be in order.
+     * @param startPageNumber A page number of beginning for crawling (min: 0)
      * @param pageLimit : the number of page to be retrieved.
      * @return items
      * @throws JAXBException in case of failure to parse items in xml.
      */
-    public List<PaxxoItem> getItems(int pageLimit) throws JAXBException {
+    public List<PaxxoItem> getItems(int startPageNumber, int pageLimit) throws JAXBException {
         PaxxoItemMetadata metadata = getItemMetadata("", "");
-        int lastPage = metadata.getLastPageNumber(pageLimit);
+        int lastPage = metadata.getLastPageNumber(startPageNumber, pageLimit);
         List<PaxxoItem> items = new ArrayList<>();
-        for (int current =0; current <= lastPage; current++) {
-            items.addAll(getItemsInPage("", "", current));
+        log.debug("Getting items {} - {}", startPageNumber, lastPage);
+        for (int current = startPageNumber; current <= lastPage; current++) {
+            try {
+                items.addAll(getItemsInPage("", "", current));
+            } catch (RestClientException e) {
+                log.error("failed to crawl page {} : {}", current, e);
+            }
         }
         return items;
     }

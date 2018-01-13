@@ -1,5 +1,6 @@
-package com.devoo.kim.api.passo;
+package com.devoo.kim.crawler.passo;
 
+import com.devoo.kim.config.paxxo.PaxxoHttpClientConfig;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
 import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
 import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
@@ -20,11 +21,11 @@ import static org.junit.Assert.assertNotNull;
  * Created by rikim on 2017. 7. 30..
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PaxxoApiClient.class})
+@SpringBootTest(classes = {PaxxoSaleItemCrawler.class, PaxxoHttpClientConfig.class})
 @ActiveProfiles("test")
-public class PaxxoApiClientIT {
+public class PaxxoSaleItemCrawlerIT {
     @Autowired
-    private PaxxoApiClient paxxoApiClient;
+    private PaxxoSaleItemCrawler paxxoSaleItemCrawler;
 
     @Value("${external.paxxo.pagination.size}")
     private int pageSize;
@@ -40,7 +41,7 @@ public class PaxxoApiClientIT {
 
         PaxxoItemMetadata result;
         WHEN: {
-            result = paxxoApiClient.getItemMetadata(makerInput, modelInput);
+            result = paxxoSaleItemCrawler.getItemMetadata(makerInput, modelInput);
         }
 
         THEN: {
@@ -59,10 +60,32 @@ public class PaxxoApiClientIT {
 
         List<PaxxoItem> result;
         WHEN: {
-            result = paxxoApiClient.getItems(pageLimit);
+            result = paxxoSaleItemCrawler.getItems(0, pageLimit);
         }
         int expectedItems = this.pageSize * pageLimit;
         THEN: {
+            Assertions.assertThat(result.size()).isEqualTo(expectedItems);
+        }
+    }
+
+    @Test
+    public void shouldRetrieveLimitedNumberOfItemsFromGivenPageNumberWhenStartPageNumberAndSpecificLimitNumberIsGiven() throws JAXBException {
+
+        int pageLimit;
+        GIVEN:
+        {
+            pageLimit = 2;
+        }
+
+        List<PaxxoItem> result;
+        WHEN:
+        {
+            int startPageNumber = 10000;
+            result = paxxoSaleItemCrawler.getItems(startPageNumber, pageLimit);
+        }
+        int expectedItems = this.pageSize * pageLimit;
+        THEN:
+        {
             Assertions.assertThat(result.size()).isEqualTo(expectedItems);
         }
     }
@@ -73,7 +96,7 @@ public class PaxxoApiClientIT {
 
         PaxxoMakerIndices index;
         WHEN: {
-           index = paxxoApiClient.getMakerIndices();
+            index = paxxoSaleItemCrawler.getMakerIndices();
         }
 
         THEN: {
