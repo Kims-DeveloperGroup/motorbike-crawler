@@ -72,14 +72,13 @@ public class PaxxoCrawlingService {
         try {
             Instant startTime = Instant.now();
             items = paxxoSaleItemCrawler.getItems(startPageNumber, pageLimit);
-            log.info("{} items were collected form Paxxo", items.size());
             for (PaxxoItem item : items) {
                 item.generateUrl(itemUrlLinkFormatter);
             }
             paxxoRepository.saveItems(items);
             Instant endTime = Instant.now();
-            log.info("Crawling completed from page {} - {}: time: {} seconds.",
-                    startPageNumber,
+            log.info("{} items are updated from page {} - {}: time: {} seconds.",
+                    items.size(), startPageNumber,
                     startPageNumber + pageLimit - 1, Duration.between(startTime, endTime).toMillis() / 1000);
         } catch (Exception e) {
             log.error("Exception in page {} : {}", startPageNumber, e);
@@ -87,8 +86,7 @@ public class PaxxoCrawlingService {
             countDownLatch.countDown();
             long timeline = Duration.between(initTime, Instant.now()).toMillis();
             timeLines.add(timeline);
-            log.debug("{} tasks remains to be completed @ {}",
-                    countDownLatch.getCount(), timeline);
+            log.debug("{} tasks remains to be completed @ {}", countDownLatch.getCount(), timeline, items.size());
         }
         return items.size();
     }
