@@ -1,5 +1,6 @@
 package com.devoo.kim.domain.paxxo;
 
+import com.devoo.kim.config.paxxo.PaxxoHttpClientConfig;
 import com.devoo.kim.crawler.passo.PaxxoSaleItemCrawler;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -17,7 +18,7 @@ import java.text.MessageFormat;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = PaxxoSaleItemCrawler.class)
+@SpringBootTest(classes = {PaxxoSaleItemCrawler.class, PaxxoHttpClientConfig.class})
 public class PaxxoItemTest {
 
     @Autowired

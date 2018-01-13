@@ -3,6 +3,7 @@ package com.devoo.kim.service;
 import com.devoo.kim.config.paxxo.PaxxoHttpClientConfig;
 import com.devoo.kim.crawler.passo.PaxxoSaleItemCrawler;
 import com.devoo.kim.repository.PaxxoRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.doNothing;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
+@Ignore
 @SpringBootTest(classes = {PaxxoSaleItemCrawler.class, PaxxoHttpClientConfig.class, ThreadPoolTaskExecutor.class})
 public class PaxxoCrawlingServicePerformanceTest {
 
