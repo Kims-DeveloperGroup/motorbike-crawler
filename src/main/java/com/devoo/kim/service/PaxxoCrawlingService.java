@@ -3,6 +3,7 @@ package com.devoo.kim.service;
 import com.devoo.kim.crawler.passo.PaxxoSaleItemCrawler;
 import com.devoo.kim.domain.paxxo.Maker;
 import com.devoo.kim.domain.paxxo.PaxxoItem;
+import com.devoo.kim.domain.paxxo.PaxxoModel;
 import com.devoo.kim.repository.PaxxoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,11 @@ public class PaxxoCrawlingService {
         List<Maker> makerIndices = paxxoSaleItemCrawler.getMakerIndices().getMakers();
         paxxoRepository.saveMakerIndices(makerIndices);
         log.info("Paxxo maker indices are updated");
+    }
+
+    public void updateModels() {
+        List<PaxxoModel> models = paxxoSaleItemCrawler.getModels();
+        paxxoRepository.saveModels(models);
     }
 
     /**
