@@ -43,6 +43,6 @@ public class PaxxoRepository {
 
     public void saveModels(List<PaxxoModel> models) {
         paxxoModelRepository.save(models);
-        log.info("{} items are saved in repository", models.size());
+        log.info("{} models are saved in repository", models.size());
     }
 }
