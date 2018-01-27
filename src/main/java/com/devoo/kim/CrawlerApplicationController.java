@@ -50,4 +50,9 @@ public class CrawlerApplicationController {
         Instant endTime = Instant.now();
         log.info("Crawling time: {} seconds.", Duration.between(startTime, endTime).toMillis() / 1000);
     }
+
+    @PutMapping("/paxxo/models")
+    public void updatePaxxoModels() {
+        paxxoCrawlingService.updateModels();
+    }
 }

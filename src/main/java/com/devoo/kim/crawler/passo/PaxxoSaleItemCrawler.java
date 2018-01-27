@@ -1,9 +1,6 @@
 package com.devoo.kim.crawler.passo;
 
-import com.devoo.kim.domain.paxxo.PaxxoItem;
-import com.devoo.kim.domain.paxxo.PaxxoItemMetadata;
-import com.devoo.kim.domain.paxxo.PaxxoItems;
-import com.devoo.kim.domain.paxxo.PaxxoMakerIndices;
+import com.devoo.kim.domain.paxxo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +33,9 @@ public class PaxxoSaleItemCrawler {
     @Value("${external.paxxo.country-maker-index-api}")
     private String makerCountryIndexApi;
 
+    @Value("${external.paxxo.models-data-url}")
+    private String modelsDataApi;
+
     private RestTemplate restTemplate;
 
     private static final String SPECIFIC_MAKER_AND_MODEL_QUERY = "@(maker_idx:@(model_idx:^maker_idx={0}#{1}#";
@@ -66,6 +66,10 @@ public class PaxxoSaleItemCrawler {
             }
         }
         return items;
+    }
+
+    public List<PaxxoModel> getModels() {
+        return restTemplate.getForObject(modelsDataApi, PaxxoModels.class).getModels();
     }
 
     /**
