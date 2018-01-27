@@ -33,16 +33,16 @@ public class PaxxoRepository {
     }
 
     public void saveMakerIndices(Collection<Maker> makers) {
-        makerIndexRepository.save(makers);
+        makerIndexRepository.saveAll(makers);
     }
 
     public void saveItems(Collection<PaxxoItem> items) {
-        itemRepository.save(items);
+        itemRepository.saveAll(items);
         log.info("{} items are saved in repository", items.size());
     }
 
     public void saveModels(List<PaxxoModel> models) {
-        paxxoModelRepository.save(models);
+        paxxoModelRepository.saveAll(models);
         log.info("{} models are saved in repository", models.size());
     }
 }

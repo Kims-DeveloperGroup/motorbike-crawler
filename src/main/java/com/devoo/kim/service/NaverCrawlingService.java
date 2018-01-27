@@ -38,7 +38,7 @@ public class NaverCrawlingService {
             for (String query : queries) {
                 searchedItems = naverCafeSearchCrawler.search(query, pageLimit, 0);
                 log.info("Saving searched {} items...", searchedItems.size());
-                itemRepository.save(searchedItems);
+                itemRepository.saveAll(searchedItems);
                 log.info("Naver sale item update completed.");
             }
         } catch (Exception e) {
