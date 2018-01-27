@@ -16,11 +16,14 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:1.4.7.RELEASE")
-    compile 'org.springframework.data:spring-data-elasticsearch:2.1.9.RELEASE'
+    compile("org.springframework.boot:spring-boot-starter-web:2.0.0.BUILD-SNAPSHOT")
+    compile 'org.springframework.data:spring-data-elasticsearch:3.0.3.RELEASE'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.4'
 
     compile 'org.jsoup:jsoup:1.11.2'
