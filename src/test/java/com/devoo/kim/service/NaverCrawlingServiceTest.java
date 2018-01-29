@@ -48,6 +48,6 @@ public class NaverCrawlingServiceTest {
         naverCrawlingService.updateSaleItems(pageLimit);
         //THEN
         verify(naverCafeSearchCrawler, times(mockQueries.size())).search(anyString(), eq(pageLimit), anyInt());
-        verify(naverItemRepository, times(mockQueries.size())).save(anyCollection());
+        verify(naverItemRepository, times(mockQueries.size())).saveAll(anyCollection());
     }
 }

@@ -1,5 +1,6 @@
 package com.devoo.kim.crawler.naver;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 
@@ -26,7 +28,8 @@ public class AsyncNaverCafeSearchCrawlerIT {
         int expectedPageNumber = 3;
 
         //When
-        Document document = asyncNaverCafeSearchCrawler.getDocument(testQueryString, expectedPageNumber);
+        Mono<String> mono = asyncNaverCafeSearchCrawler.getDocument(testQueryString, expectedPageNumber);
+        Document document = Jsoup.parse(mono.block());
         String actualPageNumberString
                 = document.getElementById("pageArea").getElementsByTag("strong").get(0).text();
         //Then

@@ -1,5 +1,6 @@
 package com.devoo.kim.service;
 
+import com.devoo.kim.crawler.naver.AsyncNaverCafeSearchCrawler;
 import com.devoo.kim.crawler.naver.NaverCafeSearchCrawler;
 import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.query.NaverQueryCreator;
@@ -18,14 +19,17 @@ public class NaverCrawlingService {
 
     public static final Integer MAX_PAGE_LIMIT = 0;
     private NaverCafeSearchCrawler naverCafeSearchCrawler;
+    private AsyncNaverCafeSearchCrawler asyncNaverCafeSearchCrawler;
     private NaverItemRepository itemRepository;
     private NaverQueryCreator queryCreator;
 
     @Autowired
     public NaverCrawlingService(NaverCafeSearchCrawler naverCafeSearchCrawler,
+                                AsyncNaverCafeSearchCrawler asyncNaverCafeSearchCrawler,
                                 NaverItemRepository itemRepository,
                                 NaverQueryCreator queryCreator) {
         this.naverCafeSearchCrawler = naverCafeSearchCrawler;
+        this.asyncNaverCafeSearchCrawler = asyncNaverCafeSearchCrawler;
         this.itemRepository = itemRepository;
         this.queryCreator = queryCreator;
     }
