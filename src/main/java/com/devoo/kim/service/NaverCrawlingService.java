@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
@@ -36,7 +39,8 @@ public class NaverCrawlingService {
     }
 
     public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException {
-        log.info("Crawling naver sale items...");
+        Instant startTime = Instant.now();
+        AtomicInteger count = new AtomicInteger(1);
         List<String> queries = queryCreator.getQueries();
         for (String query : queries) {
             asyncNaverCafeSearchCrawler.getDocuments(query, pageLimit)
@@ -44,7 +48,13 @@ public class NaverCrawlingService {
                         List<NaverItem> items =
                                 naverSearchResultDocumentParser.parse(Jsoup.parse(document), query);
                         itemRepository.saveAll(items);
-                        log.info("Saved {} items from {}", items.size(), query);
+                        int currentCount = count.getAndIncrement();
+                        log.info("job {} : saved {} items from {}", currentCount, items.size(), query);
+                        if (currentCount == pageLimit) {
+                            Instant endTime = Instant.now();
+                            log.info("Updating items for {} completed.", query);
+                            log.info("Crawling time: {} seconds.", Duration.between(startTime, endTime).toMillis() / 1000);
+                        }
                     }));
         }
     }

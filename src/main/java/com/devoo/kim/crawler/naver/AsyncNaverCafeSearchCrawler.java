@@ -49,6 +49,7 @@ public class AsyncNaverCafeSearchCrawler {
     public Mono<String> getDocument(String query, Integer pageNumber) {
         try {
             String targetURL = buildUrlForOnlyQueryEncoded(query, pageNumber);
+            log.debug("Get doc: {}", targetURL);
             WebClient.ResponseSpec response = webClient.get()
                     .uri(targetURL)
                     .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML_VALUE)
