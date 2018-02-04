@@ -1,8 +1,6 @@
 package com.devoo.kim.crawler.naver;
 
-import com.devoo.kim.domain.naver.NaverItem;
 import com.devoo.kim.parser.NaverSearchResultDocumentParser;
-import org.assertj.core.api.Assertions;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
@@ -14,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,17 +38,5 @@ public class AsyncNaverCafeSearchCrawlerIT {
         //Then
         int actualPageNumber = Integer.parseInt(actualPageNumberString);
         assertThat(actualPageNumber).isEqualTo(expectedPageNumber);
-    }
-
-    @Test
-    public void shouldBeGettingDocumentCalledAsMuchAsPageLimit_whenSearchingItemsForGivenQuery() throws InterruptedException {
-        //Given
-        String query = "cbr 125";
-        int pageLimit = 3;
-
-        //When
-        List<NaverItem> naverItems = asyncNaverCafeSearchCrawler.search(query, pageLimit);
-        Thread.sleep(5000L);
-        Assertions.assertThat(naverItems).hasSize(pageLimit * ITEM_COUNT_IN_SINGLE_PAGE);
     }
 }

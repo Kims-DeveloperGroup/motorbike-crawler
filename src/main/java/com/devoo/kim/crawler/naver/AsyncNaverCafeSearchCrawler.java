@@ -1,9 +1,6 @@
 package com.devoo.kim.crawler.naver;
 
-import com.devoo.kim.domain.naver.NaverItem;
-import com.devoo.kim.parser.NaverSearchResultDocumentParser;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -17,8 +14,6 @@ import reactor.core.publisher.Mono;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -29,32 +24,18 @@ public class AsyncNaverCafeSearchCrawler {
     private static final MessageFormat urlFragmentFormatter = new MessageFormat(FRAGMENT_PATTERN);
 
     private final WebClient webClient;
-    private NaverSearchResultDocumentParser naverSearchResultDocumentParser;
     private String cafeSearchRootUrl;
 
     @Autowired
-    public AsyncNaverCafeSearchCrawler(@Value("${external.naver.cafeSearch.rootUrl}") String cafeSearchRootUrl,
-                                       NaverSearchResultDocumentParser naverSearchResultDocumentParser) {
+    public AsyncNaverCafeSearchCrawler(@Value("${external.naver.cafeSearch.rootUrl}") String cafeSearchRootUrl) {
         this.cafeSearchRootUrl = cafeSearchRootUrl;
-        this.naverSearchResultDocumentParser = naverSearchResultDocumentParser;
         webClient = WebClient.create();
     }
 
-    public List<NaverItem> search(String query, int pageLimit) {
-        List<NaverItem> resultItems = new LinkedList<>();
+    public Flux<Mono<String>> getDocuments(String query, int pageLimit) {
         AtomicInteger pageNumber = new AtomicInteger(1);
-        Flux<Mono<String>> monoFlux = Flux.fromStream((() -> Stream.generate(() -> {
-                    Mono<String> document = getDocument(query, pageNumber.getAndIncrement());
-                    return document;
-                }
-        ).limit(pageLimit)));
-        monoFlux.subscribe(document -> {
-            document.subscribe(docString -> {
-                List<NaverItem> items = naverSearchResultDocumentParser.parse(Jsoup.parse(docString), query);
-                resultItems.addAll(items);
-            });
-        });
-        return resultItems;
+        return Flux.fromStream((() -> Stream.generate(() ->
+                getDocument(query, pageNumber.getAndIncrement())).limit(pageLimit)));
     }
 
     /**
