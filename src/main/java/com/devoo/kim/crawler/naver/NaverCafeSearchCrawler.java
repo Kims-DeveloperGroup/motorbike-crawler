@@ -20,6 +20,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@Deprecated
 public class NaverCafeSearchCrawler {
     private String cafeSearchRootUrl;
     private static final String FRAGMENT_PATTERN = "\"query\":\"{0}\",\"sortBy\":0,\"period\":[],\"menuType\":[0],\"searchBy\":0,\"duplicate\":false,\"inCafe\":\"\",\"withOutCafe\":\"\",\"includeAll\":\"\",\"exclude\":\"\",\"include\":\"\",\"exact\":\"\",\"page\":{1},\"escrow\":\"\",\"onSale\":\"\"";

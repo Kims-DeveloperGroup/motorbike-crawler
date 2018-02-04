@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
 
 @RestController
 @Slf4j
@@ -42,13 +40,10 @@ public class CrawlerApplicationController {
     @PutMapping("/naver/sale-items")
     public void updateNaverSalesItem(@RequestParam(required = false) Integer pageLimit) throws CrawlingFailureException, IOException {
         log.info("Crawling items from Naver...");
-        Instant startTime = Instant.now();
         if (pageLimit == null) {
             pageLimit = NaverCrawlingService.MAX_PAGE_LIMIT;
         }
         naverCrawlingService.updateSaleItems(pageLimit);
-        Instant endTime = Instant.now();
-        log.info("Crawling time: {} seconds.", Duration.between(startTime, endTime).toMillis() / 1000);
     }
 
     @PutMapping("/paxxo/models")
