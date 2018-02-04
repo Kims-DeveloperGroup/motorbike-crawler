@@ -38,6 +38,13 @@ public class NaverCrawlingService {
         this.naverSearchResultDocumentParser = naverSearchResultDocumentParser;
     }
 
+    /**
+     * Update items as much as the number of a page limit (1 page contains 10 items)
+     *
+     * @param pageLimit
+     * @throws CrawlingFailureException
+     * @throws IOException
+     */
     public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException {
         Instant startTime = Instant.now();
         AtomicInteger count = new AtomicInteger(1);

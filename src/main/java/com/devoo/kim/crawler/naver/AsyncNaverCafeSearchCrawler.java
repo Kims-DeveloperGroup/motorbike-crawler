@@ -32,6 +32,13 @@ public class AsyncNaverCafeSearchCrawler {
         webClient = WebClient.create();
     }
 
+    /**
+     * Asynchronously requests documents of result pages for a query as the number of page limit.
+     *
+     * @param query
+     * @param pageLimit
+     * @return
+     */
     public Flux<Mono<String>> getDocuments(String query, int pageLimit) {
         AtomicInteger pageNumber = new AtomicInteger(1);
         return Flux.fromStream((() -> Stream.generate(() ->
@@ -39,11 +46,11 @@ public class AsyncNaverCafeSearchCrawler {
     }
 
     /**
-     * Gets a document of search result page in a given page
+     * Asynchronously requests a document of search result page in a given page.
      *
      * @param query
      * @param pageNumber the page number of search pages (page number begins with 1)
-     * @return a raw document of page
+     * @return Mono<String>
      * @throws UnsupportedEncodingException
      */
     public Mono<String> getDocument(String query, Integer pageNumber) {
