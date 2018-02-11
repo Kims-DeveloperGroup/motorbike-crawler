@@ -45,10 +45,11 @@ public class NaverCrawlingService {
      * @throws CrawlingFailureException
      * @throws IOException
      */
-    public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException {
+    public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException, InterruptedException {
         Instant startTime = Instant.now();
         AtomicInteger count = new AtomicInteger(1);
         List<String> queries = queryCreator.getQueries();
+        log.info("{} queries are generated", queries.size());
         for (String query : queries) {
             asyncNaverCafeSearchCrawler.getDocuments(query, pageLimit)
                     .subscribe(mono -> mono.subscribe(document -> {
@@ -63,6 +64,8 @@ public class NaverCrawlingService {
                             log.info("Crawling time: {} seconds.", Duration.between(startTime, endTime).toMillis() / 1000);
                         }
                     }));
+            log.info("Dealaying...");
+            Thread.sleep(1000L);
         }
     }
 }

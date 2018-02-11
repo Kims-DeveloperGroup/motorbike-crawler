@@ -38,7 +38,7 @@ public class CrawlerApplicationController {
     }
 
     @PutMapping("/naver/sale-items")
-    public void updateNaverSalesItem(@RequestParam(required = false) Integer pageLimit) throws CrawlingFailureException, IOException {
+    public void updateNaverSalesItem(@RequestParam(required = false) Integer pageLimit) throws CrawlingFailureException, IOException, InterruptedException {
         log.info("Crawling items from Naver...");
         if (pageLimit == null) {
             pageLimit = NaverCrawlingService.MAX_PAGE_LIMIT;
