@@ -26,6 +26,7 @@ public class NaverCrawlingService {
     private NaverItemRepository itemRepository;
     private NaverQueryCreator queryCreator;
     private NaverSearchResultDocumentParser naverSearchResultDocumentParser;
+    private final long DELAYING_TIME = 1000L;
 
     @Autowired
     public NaverCrawlingService(AsyncNaverCafeSearchCrawler asyncNaverCafeSearchCrawler,
@@ -52,7 +53,8 @@ public class NaverCrawlingService {
         log.info("{} queries are generated", queries.size());
         for (String query : queries) {
             asyncNaverCafeSearchCrawler.getDocuments(query, pageLimit)
-                    .subscribe(mono -> mono.subscribe(document -> {
+                    .subscribe(mono ->
+                            mono.subscribe(document -> {
                         List<NaverItem> items =
                                 naverSearchResultDocumentParser.parse(Jsoup.parse(document), query);
                         itemRepository.saveAll(items);
@@ -64,8 +66,8 @@ public class NaverCrawlingService {
                             log.info("Crawling time: {} seconds.", Duration.between(startTime, endTime).toMillis() / 1000);
                         }
                     }));
-            log.info("Dealaying...");
-            Thread.sleep(1000L);
+            log.info("Delaying for {}...", DELAYING_TIME);
+            Thread.sleep(DELAYING_TIME);
         }
     }
 }
