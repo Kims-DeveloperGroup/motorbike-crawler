@@ -26,6 +26,7 @@ public class NaverCrawlingService {
     private NaverItemRepository itemRepository;
     private NaverQueryCreator queryCreator;
     private NaverSearchResultDocumentParser naverSearchResultDocumentParser;
+    private final long DELAYING_TIME = 1000L;
 
     @Autowired
     public NaverCrawlingService(AsyncNaverCafeSearchCrawler asyncNaverCafeSearchCrawler,
@@ -45,13 +46,15 @@ public class NaverCrawlingService {
      * @throws CrawlingFailureException
      * @throws IOException
      */
-    public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException {
+    public void updateSaleItems(int pageLimit) throws CrawlingFailureException, IOException, InterruptedException {
         Instant startTime = Instant.now();
         AtomicInteger count = new AtomicInteger(1);
         List<String> queries = queryCreator.getQueries();
+        log.info("{} queries are generated", queries.size());
         for (String query : queries) {
             asyncNaverCafeSearchCrawler.getDocuments(query, pageLimit)
-                    .subscribe(mono -> mono.subscribe(document -> {
+                    .subscribe(mono ->
+                            mono.subscribe(document -> {
                         List<NaverItem> items =
                                 naverSearchResultDocumentParser.parse(Jsoup.parse(document), query);
                         itemRepository.saveAll(items);
@@ -63,6 +66,8 @@ public class NaverCrawlingService {
                             log.info("Crawling time: {} seconds.", Duration.between(startTime, endTime).toMillis() / 1000);
                         }
                     }));
+            log.info("Delaying for {}...", DELAYING_TIME);
+            Thread.sleep(DELAYING_TIME);
         }
     }
 }
